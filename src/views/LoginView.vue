@@ -6,9 +6,8 @@
             <div class="login__container--form">
 
                     <div class="inputs">
-                        <CPInput type="email" label="E-mail" v-model="email"/>
-                        <CPInput typew="password" label="Senha" v-model="senha" />
-
+                        <CPInput type="email" label="E-mail" v-model="email" required/>
+                        <CPInput typew="password" label="Senha" v-model="senha" required/>
                     </div>
                     <div  class="button">
                         <CPButton text="Entrar" type="button" @click="login"  variant="default" size="large"></CPButton>

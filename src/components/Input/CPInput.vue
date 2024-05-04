@@ -1,23 +1,25 @@
 <template>
-  <v-text-field :type="type" :placeholder="placeholder" :label="label" :value="value" @input="onInput"></v-text-field>
+  <v-text-field :type="type" :placeholder="placeholder" :label="label" :model-value="modelValue" @update:modelValue="updateValue"></v-text-field>
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
-
-const emit = defineEmits(['input'])
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   type: String,
   placeholder: String,
   label: String,
   disabled: String,
-  value: String,
+  modelValue: String,
 })
 
-function onInput(newValue) {
-  emit('input', newValue);
+const updateValue = (value) => {
+  emit('update:modelValue', value)
 }
 </script>
-<style>
+<style scoped>
+.custom-input .v-input__control .v-input__slot::before {
+  border-bottom: 2px solid var(--color-primary) !important;
+}
 </style>
