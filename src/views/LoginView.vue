@@ -1,19 +1,20 @@
 <template>
     <div class="login__container">
-        <div class="login__container--capa"></div>
+       <CPBackground />
 
         <div class="login__container__box">
             <div class="login__container--form">
 
                     <div class="inputs">
-                        <CPInput type="email" placeholder="Email" label="E-mail"/>
-                        <CPInput typew="password" placeholder="Senha" />
+                        <CPInput type="email" label="E-mail" v-model="email"/>
+                        <CPInput typew="password" label="Senha" v-model="senha" />
 
                     </div>
-                    <div>
-
+                    <div  class="button">
                         <CPButton text="Entrar" type="button" @click="login"  variant="default" size="large"></CPButton>
                     </div>
+
+                    <span>Não é cadastrado? <a href="#" target="_blank">Cadastre-se.</a></span>
             </div>
         </div>
 
@@ -22,6 +23,12 @@
 <script setup>
 import CPInput from '../components/Input/CPInput.vue'
 import CPButton from '../components/Button/CPButton.vue'
+import CPBackground from '@/components/Background/CPBackground.vue';
+
+import { ref } from 'vue'
+
+const email = ref('')
+const senha = ref('')
 
 function login() {
     alert('aqui')
@@ -37,12 +44,6 @@ function login() {
     height: 100vh;
 }
 
-.login__container--capa {
-    width: 100%;
-    border-radius: 0 45px 45px 0;
-    background-color: #698D6F;
-    height: 100%;
-}
 
 .login__container__box {
   display: flex;
@@ -57,12 +58,24 @@ function login() {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 75px;
-
 }
 
 .inputs {
     width: 400px;
+    margin-bottom: 60px;
+}
 
+.button {
+    margin-bottom: 8px;
+}
+
+span {
+    font-size: 12px;
+    
+    a {
+        text-decoration: none;
+        font-weight: 600;
+        color: var(--color-primary);
+    }
 }
 </style>

@@ -1,28 +1,23 @@
 <template>
-    <v-text-field
-        :type="type"
-        :placeholder="placeholder"
-        :label="label"
-        :value="modelValue"
-        @input="emit('update:modelValue', $event.target.value)"
-  ></v-text-field>
+  <v-text-field :type="type" :placeholder="placeholder" :label="label" :value="value" @input="onInput"></v-text-field>
 </template>
 
 <script setup>
 import { defineProps } from 'vue'
 
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['input'])
 const props = defineProps({
-    type: String,
-    placeholder: String,
-    label: String,
-    disabled: String,
-    modelValue: String,
+  type: String,
+  placeholder: String,
+  label: String,
+  disabled: String,
+  value: String,
 })
+
+function onInput(newValue) {
+  emit('input', newValue);
+}
 </script>
 <style>
-.CPInput {
-    border: red;
-}
 </style>
