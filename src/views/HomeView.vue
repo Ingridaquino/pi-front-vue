@@ -1,9 +1,11 @@
 <script setup>
+import ProfessionalRegistration from '@/components/screens/Register/ProfessionalRegistration/ProfessionalRegistration.vue';
+
 
 </script>
 
 <template>
-  <main>
-    Home
-  </main>
+  <ProfessionalRegistration />
 </template>
+
+<
