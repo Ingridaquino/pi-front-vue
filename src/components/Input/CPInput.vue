@@ -1,5 +1,9 @@
 <template>
-  <v-text-field :type="type" :placeholder="placeholder" :label="label" :model-value="modelValue" @update:modelValue="updateValue"></v-text-field>
+  <v-text-field variant="outlined" 
+    :type="type" :placeholder="placeholder" 
+    :label="label" :model-value="modelValue"
+    @update:modelValue="updateValue"
+    :size="size"></v-text-field>
 </template>
 
 <script setup>
@@ -12,6 +16,7 @@ const props = defineProps({
   label: String,
   disabled: String,
   modelValue: String,
+  size: String,
 })
 
 const updateValue = (value) => {

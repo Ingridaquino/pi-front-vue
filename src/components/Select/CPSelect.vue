@@ -4,6 +4,7 @@
         :items="options"
         :label="label"
         @change="handleSelectChange"
+        variant="outlined"
     ></v-select>
 </template>
 

@@ -1,20 +1,26 @@
 <template>
     <div class="professional__container">
         <CPBackground />
-
         <div class="professional__container--inputs">
-            <CPStepper text="Dados Pessoais"/>
             <form>
+                <CPStepper text="Dados Pessoais"/>
                 <div class="inputs">
-                    <div class="inputs-gridA">
-                        <CPInput v-model="name" label="Nome Completo" type="name" />
-                        <CPInput v-model="text" label="CPF" type="text" size="small" />
-                        <CPAvatar size="100"/>
-                    </div>
-                    <div class="inputs-gridB">
-                        <CPInput v-model="date" label="Data de Nascimento" type="date" />
-                        <CPSelect v-model="gender" label="Gênero" :options="genders" />
-                    </div>
+                    <PersonalData  :form="form"/>
+                </div>
+
+                <CPStepper text="Endereço"/>
+                <div class="inputs">
+                    <Address :form="form"/>
+                </div>
+
+                <CPStepper text="Dados Profissionais"/>
+                <div class="inputs">
+                    <ProfessionalDetails :form="form"/>
+                </div>
+
+                <CPStepper text="Contatos"/>
+                <div class="inputs">
+                    <Contacts :form="form"/>
                 </div>
             </form>
         </div>
@@ -22,22 +28,34 @@
 </template>
 
 <script setup>
-import CPAvatar from '@/components/Avatar/CPAvatar.vue';
-import CPBackground from '@/components/Background/CPBackground.vue';
-import CPInput from '@/components/Input/CPInput.vue';
-import CPSelect from '@/components/Select/CPSelect.vue';
 import CPStepper from '@/components/Stepper /CPStepper.vue';
+import CPBackground from '@/components/Background/CPBackground.vue';
+import PersonalData from './components/PersonalData.vue';
+import Address from './components/Address.vue';
+import ProfessionalDetails from './components/ProfessionalDetails.vue';
+import Contacts from './components/Contacts.vue';
 
 
 import { ref } from 'vue';
 
-let name = ref('')
-let date = ref('')
-let gender = ref('')
-let text = ref('')
 
-console.log(name, '?')
-const genders = ['Masculino', 'Feminino', 'Outro'];
+let form = ref({
+    name: '',
+    date: '',
+    gender: '',
+    text: '',
+    number: '',
+    complement: '',
+    neighborhood: '',
+    area: '',
+    specialty: '',
+    phone: '',
+    network: ''
+
+
+});
+
+
 </script>
 
 <style>
@@ -53,14 +71,9 @@ const genders = ['Masculino', 'Feminino', 'Outro'];
 }
 
 .inputs {
-    
+    margin: 0 20px
 }
 
-.inputs-gridA {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-}
 
 .v-field__input {
     display: inline !important;

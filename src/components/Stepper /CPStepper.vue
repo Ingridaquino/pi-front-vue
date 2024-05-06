@@ -26,12 +26,11 @@ const props = defineProps({
     background-color: var(--color-secondary);
     border-radius: 0 24px 24px 0;
     margin: 20px 10px 20px 0; 
-    padding: 20px 0;
+    padding: 20px 25px;
 }
 
 p {
-    text-align: center;
-    font-weight: thin;
+    color: #4a4a4a;
 }
 
 </style>
