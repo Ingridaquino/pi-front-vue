@@ -1,13 +1,12 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput v-model="form.area" label="Área de atuação" type="text" />
-        <CPSelect v-model="form.specialty" label="Especialidade" :options="specialties" />
+        <CPInput v-model="form.phone" label="Telefone" type="text"  v-mask-phone.br/>
+        <CPInput v-model="form.network" label="Rede Social" type="url" />
     </div>
 
 </template>
 <script setup>
 import CPInput from '@/components/Input/CPInput.vue';
-import CPSelect from '@/components/Select/CPSelect.vue';
 
 const props = defineProps({
     form: {}
@@ -20,6 +19,7 @@ const props = defineProps({
     display: grid;
     grid-template-columns: 1fr 1fr 200px;
     gap: 8px;
+    margin-bottom: 70px;
 }
 
 

@@ -2,7 +2,7 @@
     <div class="inputs-box">
         <div class="inputs-gridA">
             <CPInput v-model="form.name" label="Nome Completo" type="name" />
-            <CPInput v-model="form.text" label="CPF" type="text" />
+            <CPInput v-model="form.text" label="CPF" type="text"  v-mask-cpf/>
             <CPInput v-model="form.date" label="Data de Nascimento" type="date" />
             <CPSelect v-model="form.gender" label="Gênero" :options="genders" />
         </div>

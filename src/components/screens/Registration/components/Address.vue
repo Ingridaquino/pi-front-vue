@@ -1,6 +1,6 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput v-model="form.number" label="CEP" type="text" />
+        <CPInput v-model="form.number" label="CEP" type="text" v-mask="'#####-###'" />
         <CPInput v-model="form.complement" label="Rua / AV" type="text" />
         <CPInput v-model="form.neighborhood" label="Bairro" type="text" />
     </div>

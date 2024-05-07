@@ -3,6 +3,8 @@
     :type="type" :placeholder="placeholder" 
     :label="label" :model-value="modelValue"
     @update:modelValue="updateValue"
+    :required="required" 
+    :disabled="disabled"
     :size="size"></v-text-field>
 </template>
 
@@ -17,6 +19,8 @@ const props = defineProps({
   disabled: String,
   modelValue: String,
   size: String,
+  required: Boolean, 
+  disabled: Boolean
 })
 
 const updateValue = (value) => {

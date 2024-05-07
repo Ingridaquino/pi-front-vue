@@ -1,11 +1,10 @@
 <script setup>
-import ProfessionalRegistration from '@/components/screens/Register/ProfessionalRegistration/ProfessionalRegistration.vue';
-
+import Registration from '@/components/screens/Registration/Registration.vue';
 
 </script>
 
 <template>
-  <ProfessionalRegistration />
+  <Registration />
 </template>
 
 <

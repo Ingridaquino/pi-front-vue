@@ -1,16 +1,18 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput v-model="form.phone" label="Telefone" type="number" />
-        <CPInput v-model="form.network" label="Rede Social" type="url" />
+        <CPInput v-model="form.area" label="Área de atuação" type="text" />
+        <CPSelect v-model="form.specialty" label="Especialidade"/>
     </div>
 
 </template>
 <script setup>
 import CPInput from '@/components/Input/CPInput.vue';
+import CPSelect from '@/components/Select/CPSelect.vue';
 
 const props = defineProps({
     form: {}
 })
+
 
 </script>
 

@@ -29,15 +29,15 @@ const props = defineProps({
 <style>
 
 .btn-default {
-    background: var(--color-primary);
-    color: white;
+    background: var(--color-primary) !important;
+    color: white !important;
 }
 
 
 .btn-outlined {
-    background: transparent;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
+    background: transparent !important;
+    border: 1px solid var(--color-primary) !important;
+    color: var(--color-primary) !important;
 }
 
 
@@ -50,6 +50,7 @@ const props = defineProps({
 }
 
 .btn-small {
-    width: 100px;
+    width: 150px;
+    height: 27px !important;
 }
 </style>
