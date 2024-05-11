@@ -30,7 +30,7 @@ const props = defineProps({
 }
 
 p {
-    color: #4a4a4a;
+    color: var(--text-default);
 }
 
 </style>

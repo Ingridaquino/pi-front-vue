@@ -5,7 +5,10 @@
     @update:modelValue="updateValue"
     :required="required" 
     :disabled="disabled"
-    :size="size"></v-text-field>
+    :size="size"
+    :error-messages="errorMessages"
+    >
+  </v-text-field>
 </template>
 
 <script setup>
@@ -20,13 +23,19 @@ const props = defineProps({
   modelValue: String,
   size: String,
   required: Boolean, 
-  disabled: Boolean
+  errorMessages: String
 })
 
 const updateValue = (value) => {
   emit('update:modelValue', value)
 }
 </script>
+
+<style scoped>
+.custom-input .v-input__control .v-input__slot::before {
+  border-bottom: 2px solid var(--color-primary) !important;
+}
+</style>
 <style scoped>
 .custom-input .v-input__control .v-input__slot::before {
   border-bottom: 2px solid var(--color-primary) !important;

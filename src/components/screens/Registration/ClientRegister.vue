@@ -3,12 +3,12 @@
       <form>
         <CPStepper text="Dados Pessoais" />
         <div class="inputs">
-          <PersonalData :form="form" />
+          <PersonalData :form="form"  />
         </div>
   
         <CPStepper text="Endereço" />
         <div class="inputs">
-          <Address :form="form" />
+          <Address :form="form"  />
         </div>
 
   
@@ -44,6 +44,19 @@
     neighborhood: "",
     phone: "",
     network: "",
+    rules: {
+      required: (value) => !!value || "Campo obrigatório",
+      email: (value) => {
+        const pattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        return pattern.test(value) || "E-mail inválido";
+      },
+      telefone: (value) => {
+        const pattern = /^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}\-[0-9]{4}$/;
+        return pattern.test(value) || "Telefone inválido.";
+      },
+      min: (value) => value.length >= 8 || "Valor inserido é muito curto.",
+      max: (value) => value.length <= 60 || "Valor inserido é muito longo.",
+    },
   });
   </script>
   
@@ -61,6 +74,6 @@
     display: flex;
     justify-content: flex-end;
     align-content: center;
-    margin: 40px 40px 0 0;
+    margin: 220px 40px 0 0;
   }
   </style>

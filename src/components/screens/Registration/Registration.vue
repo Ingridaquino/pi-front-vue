@@ -3,11 +3,11 @@
         <CPBackground />
         
         <div class="registration__boxes">
-            <!-- <div class="box-switch">
-                <v-switch v-model="selectedOption" :label="selectedOption === 'cliente' ? 'Cliente' : 'Profissional'" :value="selectedOption" :items="['cliente', 'profissional']" dense></v-switch>
+            <div class="box-switch">
+                <v-switch class="my-switch" v-model="selectedOption" :label="selectedOption ? 'Cliente' : 'Profissional'" :options="['cliente', 'profissional']" ></v-switch>
             </div>
-            <ClientRegister v-if="selectedOption === 'cliente'"/> -->
-            <ProfessionalRegistration  />
+            <ClientRegister v-if="selectedOption"/>
+            <ProfessionalRegistration v-else />
         </div>
     </div>
 </template>
@@ -18,11 +18,9 @@ import ClientRegister from './ClientRegister.vue';
 import CPBackground from '@/components/Background/CPBackground.vue';
 import { ref, onMounted } from 'vue';
 
-const selectedOption = ref(localStorage.getItem('selectedOption'));
+const selectedOption = ref(true);
 
-onMounted(() => {
-    localStorage.setItem('selectedOption', selectedOption.value);
-});
+
 </script>
 
 <style scoped>
@@ -37,7 +35,7 @@ onMounted(() => {
     display: flex;
     justify-content: flex-end;
     margin: 0 20px 0 0;
-    height: 30px;
+    height: 20px;
 }
 
 </style>
