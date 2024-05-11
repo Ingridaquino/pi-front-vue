@@ -8,6 +8,10 @@
             </div>
             <ClientRegister v-if="selectedOption"/>
             <ProfessionalRegistration v-else />
+
+            <div class="registration--button">
+              <CPButton text="Salvar" type="submit" size="small" variant="default"  @click="router.push('/registration-email')"/>
+            </div>
         </div>
     </div>
 </template>
@@ -17,6 +21,8 @@ import ProfessionalRegistration from './ProfessionalRegistration.vue'
 import ClientRegister from './ClientRegister.vue';
 import CPBackground from '@/components/Background/CPBackground.vue';
 import { ref, onMounted } from 'vue';
+import CPButton from '@/components/Button/CPButton.vue';
+import router from '@/router';
 
 const selectedOption = ref(true);
 
@@ -36,6 +42,12 @@ const selectedOption = ref(true);
     justify-content: flex-end;
     margin: 0 20px 0 0;
     height: 20px;
+}
+
+.registration--button {
+    display: flex;
+    justify-content: flex-end;
+    margin: 40px 60px;
 }
 
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput v-model="form.number" label="CEP" type="text" v-mask-cep :error-messages="v$.number.$error ? 'CEP deve ter exatamente 8 dígitos' : ''" @input="fetchAddress"/>
+        <CPInput v-model="form.number" label="CEP" type="text" v-mask-cep :error-messages="v$.number.$error ? (v$.number.$error.length === 1 ? 'CEP deve ter exatamente 8 dígitos' : 'CEP inválido') : ''" @input="fetchAddress"/>
         <CPInput v-model="form.complement" label="Rua / AV" type="text" :error-messages="v$.complement.$error ? 'Este campo é obrigatório' : ''" />
         <CPInput v-model="form.neighborhood" label="Bairro" type="text" :error-messages="v$.neighborhood.$error ? 'Este campo é obrigatório' : ''" />
     </div>

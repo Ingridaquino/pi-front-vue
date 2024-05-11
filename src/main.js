@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueMask from '@devindex/vue-mask';
+import Vuelidate from '@vuelidate/core'
 
 import './assets/global.css'
 
@@ -25,4 +26,4 @@ const vuetify = createVuetify({
 const app = createApp(App)
 
 app.use(VueMask);
-app.use(vuetify).use(router).mount('#app')
+app.use(vuetify).use(router).use(Vuelidate).mount('#app')

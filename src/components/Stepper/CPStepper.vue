@@ -3,7 +3,7 @@
         <div class="stepper">
             <p>{{text}}</p>
         </div>
-        <v-divider inset></v-divider>
+        <v-divider class="border-opacity-100" inset></v-divider>
     </div>
 </template>
 <script setup>

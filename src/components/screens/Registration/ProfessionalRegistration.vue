@@ -20,17 +20,12 @@
       <div class="inputs">
         <Contacts :form="form" />
       </div>
-
-      <div class="footer-button">
-        <CPButton text="Salvar" type="submit" size="small" variant="default" />
-      </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import CPStepper from "@/components/Stepper /CPStepper.vue";
-import CPButton from "@/components/Button/CPButton.vue";
+import CPStepper from "@/components/Stepper/CPStepper.vue";
 import PersonalData from "./components/PersonalData.vue";
 import Address from "./components/Address.vue";
 import ProfessionalDetails from "./components/ProfessionalDetails.vue";
@@ -65,10 +60,6 @@ let form = ref({
   display: inline !important;
 }
 
-.footer-button {
-  display: flex;
-  justify-content: flex-end;
-  align-content: center;
-  margin: 40px 40px 0 0;
-}
+
+
 </style>

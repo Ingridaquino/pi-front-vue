@@ -1,7 +1,7 @@
 <template>
-    <div class="inputs-gridA">
-        <CPInput v-model="form.area" label="Área de atuação" type="text" :error-messages="errors.area" />
-        <CPSelect v-model="form.specialty" label="Especialidade" :error-messages="errors.specialty" />
+    <div  class="inputs-gridA">
+        <CPInput v-model="form.area" label="Área de atuação" type="text" :error-messages="v$.form.area.$error"  />
+        <CPSelect v-model="form.specialty" label="Especialidade" :error-messages="v$.form.specialty.$error"  />
     </div>
 </template>
 
@@ -13,15 +13,22 @@ import CPInput from '@/components/Input/CPInput.vue';
 import CPSelect from '@/components/Select/CPSelect.vue';
 
 const props = defineProps({
-    form: {}
+    form: {
+        default: {
+            area: '',
+            specialty: ''
+        }
+    }
 });
 
 const rules = {
-    area: { required },
-    specialty: { required }
+    form: {
+        area: { required },
+        specialty: { required }
+    }
 };
 
-const errors = useVuelidate(rules, form);
+const v$ = useVuelidate(rules, props.form);
 
 </script>
 
@@ -31,6 +38,4 @@ const errors = useVuelidate(rules, form);
     grid-template-columns: 1fr 1fr 200px;
     gap: 8px;
 }
-
-
 </style>
