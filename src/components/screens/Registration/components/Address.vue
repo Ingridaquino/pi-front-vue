@@ -42,6 +42,7 @@ const fetchAddress = async () => {
       console.error(error);
     }
   }
+
 };
 </script>
 
