@@ -1,7 +1,8 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput v-model="form.phone" label="Telefone" type="number" v-mask-phone.br/>
-        <CPInput v-model="form.network" label="Rede Social" type="url" />
+        <CPInput v-model="form.phone" label="Telefone" type="text" v-mask-phone.br/>
+
+        <CPInput v-model="form.network" label="Rede Social" type="text" />
     </div>
 
 </template>
@@ -9,7 +10,12 @@
 import CPInput from '@/components/Input/CPInput.vue';
 
 const props = defineProps({
-    form: {}
+    form: {
+        default: () => ({
+            phone: '',
+            network: ''
+        })
+    }
 })
 
 </script>
