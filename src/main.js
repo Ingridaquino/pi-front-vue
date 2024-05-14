@@ -12,6 +12,7 @@ import './assets/global.css'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
+import colors from 'vuetify/util/colors'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
@@ -21,7 +22,20 @@ const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi'
   },
+  theme: {
+    themes: {
+      light: {
+        dark: false,
+        colors: {
+            primary: '#11212d',
+            secondary: '#243745',
+
+        }
+      }
+    }
+  }
 })
+
 
 const app = createApp(App)
 

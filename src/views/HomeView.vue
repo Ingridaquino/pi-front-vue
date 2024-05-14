@@ -1,10 +1,18 @@
 <script setup>
-import Registration from '@/components/screens/Registration/Registration.vue';
+import { RouterView } from 'vue-router'
+
+import CPHeader from '@/components/Header/CPHeader.vue'
 
 </script>
 
 <template>
-  <Registration />
+  <main>
+    <CPHeader>
+      <template #content>
+        <RouterView />
+      </template>
+    </CPHeader>
+  </main>
 </template>
 
 <
