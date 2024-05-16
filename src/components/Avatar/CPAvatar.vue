@@ -1,55 +1,60 @@
 <template>
     <div class="avatar-box">
-        <v-avatar :size="size" :image="photoUrl" color="#ccc" ></v-avatar>
-      
+      <input type="file" ref="fileInput" style="display: none" @change="previewImage">
+      <v-avatar :size="size" :image="photoUrl" color="#ccc" @click="openFileInput"></v-avatar>
     </div>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  export default {
     data() {
-        return {
-            photoUrl: '',
-        };
+      return {
+        photoUrl: '',
+      };
     },
     props: {
-        size: {
-            type: [String, Number],
-            default: 'small'
-        }
+      size: {
+        type: [String, Number],
+        default: 'small'
+      }
     },
     methods: {
-        previewImage(event) {
-            console.log('File selected'); // Adicione esta linha
-            const file = event.target.files[0];
-            this.photoUrl = URL.createObjectURL(file);
-            this.uploadPhoto(file);
-        },
-        async uploadPhoto(file) {
-            const formData = new FormData();
-            formData.append('photo', file);
-
-            try {
-                const response = await fetch('API_URL', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    this.$nextTick(() => {
-                        this.photoUrl = data.photoUrl;
-                    });
-                } else {
-                    console.error('Failed to upload photo');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
+      openFileInput() {
+        this.$refs.fileInput.click();
+      },
+      async previewImage(event) {
+        console.log('File selected');
+        const file = event.target.files[0];
+        this.photoUrl = URL.createObjectURL(file); 
+        this.uploadPhoto(file);
+      },
+      async uploadPhoto(file) {
+        const formData = new FormData();
+        formData.append('photo', file);
+  
+        try {
+          const response = await fetch('API_URL', {
+            method: 'POST',
+            body: formData
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            this.$nextTick(() => {
+              this.photoUrl = data.photoUrl; 
+            });
+          } else {
+            console.error('Failed to upload photo');
+          }
+        } catch (error) {
+          console.error('Error:', error);
         }
+      }
     }
-};
-</script>
+  };
+  </script>
+  
+  
 
 <style>
 .avatar-box {

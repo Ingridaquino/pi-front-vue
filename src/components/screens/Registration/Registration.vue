@@ -10,7 +10,7 @@
             </div>
 
             <div class="professional__container--inputs">
-                <form>
+                <form @submit.prevent="handleSubmit">
                     <CPStepper text="Dados Pessoais" />
                     <div class="inputs">
                         <PersonalData :form="form" />
@@ -30,41 +30,50 @@
                     <div class="inputs">
                         <Contacts :form="form" />
                     </div>
+
+                    <div class="registration--button">
+                        <CPButton text="Salvar" type="submit" size="small" variant="default" />
+                    </div>
                 </form>
             </div>
-
-            <div class="registration--button">
-                <CPButton text="Salvar" type="submit" size="small" variant="default" 
-                    @click="redirectToRegistrationEmail" />
-            </div>
         </div>
+
+        <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right> 
+            {{ snackbarMessage }}
+            <template v-slot:actions>
+                <v-btn color="primary" text @click="snackbar = false">
+                    Fechar
+                </v-btn>
+            </template>
+        </v-snackbar>
     </div>
 </template>
 
 <script setup>
-
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import PersonalData from "./components/PersonalData.vue";
 import Address from "./components/Address.vue";
 import ProfessionalDetails from "./components/ProfessionalDetails.vue";
 import Contacts from "./components/Contacts.vue";
-
 import CPStepper from "@/components/Stepper/CPStepper.vue";
 import CPBackground from '@/components/Background/CPBackground.vue';
-import { ref, onMounted } from 'vue';
 import CPButton from '@/components/Button/CPButton.vue';
-import { useRouter } from 'vue-router';
+import { useVuelidate } from '@vuelidate/core';
+import { required, helpers } from '@vuelidate/validators';
 
-
-const router = useRouter()
+const router = useRouter();
 const selectedOption = ref(true);
+const type = ref('');
 
+const snackbar = ref(false);
+const snackbarMessage = ref('');
 
-let form = ref({
-    type: "",
+const form = ref({
     name: "",
     date: "",
     gender: "",
-    cep: "",
+    document: "",
     number: "",
     complement: "",
     neighborhood: "",
@@ -74,23 +83,43 @@ let form = ref({
     network: "",
 });
 
-function redirectToRegistrationEmail() {
-    if (form.value !== '') {
-        form.value.type = selectedOption.value ? 'cliente' : 'profissional';
-        
-        if (form.value.phone !== '') {
-            localStorage.setItem('formData', JSON.stringify(form.value));
-            router.push('registration-email');
-        } else {
-            alert('Preencha todos os campos obrigatórios');
-        }
+const requiredMessage = helpers.withMessage('Este campo é obrigatório', required);
+
+const rules = computed(() => ({
+    name: { required: requiredMessage },
+    date: { required: requiredMessage },
+    gender: { required: requiredMessage },
+    document: { required: requiredMessage },
+    number: { required: requiredMessage },
+    complement: { required: requiredMessage },
+    neighborhood: { required: requiredMessage },
+    area: { required: requiredMessage },
+    specialty: { required: requiredMessage },
+    phone: { required: requiredMessage },
+    network: { required: requiredMessage },
+}));
+
+const v$ = useVuelidate(rules, form);
+
+async function handleSubmit() {
+    const isValid = await v$.value.$validate();
+
+    if (isValid) {
+        type.value = selectedOption.value ? 'cliente' : 'profissional';
+        localStorage.setItem('formData', JSON.stringify(form.value));
+        localStorage.setItem('type', JSON.stringify(type.value));
+
+        snackbarMessage.value = 'Salvo!';
+        snackbar.value = true;
+
+        router.push('registration-email');
     } else {
-        alert('Preencha todos os campos obrigatórios');
+        snackbarMessage.value = 'Preencha todos os campos!';
+        snackbar.value = true;
     }
 }
-
-
 </script>
+
 
 <style scoped>
 .registration__container {

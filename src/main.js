@@ -6,8 +6,6 @@ import Vuelidate from '@vuelidate/core'
 
 import './assets/global.css'
 
-
-
 // Vuetify
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -27,8 +25,9 @@ const vuetify = createVuetify({
       light: {
         dark: false,
         colors: {
-            primary: '#11212d',
-            secondary: '#243745',
+            primary: '#11212D',
+            secondary: '#253745',
+            snackbar: '#4A5C6A',
 
         }
       }

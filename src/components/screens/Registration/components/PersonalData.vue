@@ -1,11 +1,10 @@
 <template>
     <div class="inputs-box">
         <div class="inputs-gridA">
-            <CPInput v-model="form.name" label="Nome Completo *" type="name" />
-            <CPInput v-model="form.cep" label="CPF *" type="text" v-mask-cpf  />
-            <CPInput v-model="form.date" label="Data de Nascimento *" type="date"  min="1899-12-30"
-            max="2001-12-30" required/>
-            <CPSelect v-model="form.gender" label="Gênero *" :options="genders" @change="v$.form.gender" />
+            <CPInput v-model="form.name" label="Nome Completo *" type="name"  :error-messages="v$.name.$errors.length ? (v$.name.$errors.find(e => e.$message)?.$message || '') : ''"/>
+            <CPInput v-model="form.document" label="CPF/CNPJ *" type="text" v-mask-cpf-cnpj     :error-messages="v$.document.$errors.length ? (v$.document.$errors.find(e => e.$message)?.$message || '') : ''"/>
+            <CPInput v-model="form.date" label="Data de Nascimento *" type="date" min="1899-12-30" max="2001-12-30" required  />
+            <CPSelect v-model="form.gender" label="Gênero *" :options="genders"  />
         </div>
         <div class="inputs-gridB">
             <CPAvatar size="90" />
@@ -14,9 +13,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, toRefs } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
-import { required, maxLength, minLength } from '@vuelidate/validators';
+import { required, maxLength, minLength, helpers } from '@vuelidate/validators';
 import CPInput from '@/components/Input/CPInput.vue';
 import CPSelect from '@/components/Select/CPSelect.vue';
 import CPAvatar from '@/components/Avatar/CPAvatar.vue';
@@ -25,7 +24,7 @@ const props = defineProps({
     form: {
         default: () => ({
             name: '',
-            cep: '',  
+            document: '',  
             date: '',
             gender: '' 
         })
@@ -34,18 +33,22 @@ const props = defineProps({
 
 const genders = ['Masculino', 'Feminino', 'Outro'];
 
+const requiredMessage = helpers.withMessage('Este campo é obrigatório', required);
+const cpfCnpjLengthMessage = helpers.withMessage('CPF/CNPJ deve ter exatamente 11 dígitos', minLength(11));
+
 const rules = {
-    form: {
-        name: { required },
-        cep: { required, maxLength: maxLength(11), minLength: minLength(11) },
-        date: { required },
-    }
+    name: { required: requiredMessage },
+    document: { required: requiredMessage, minLength: cpfCnpjLengthMessage, maxLength: cpfCnpjLengthMessage },
+    date: { required: requiredMessage }
 };
 
-const v$ = useVuelidate(rules, props.form);
+const { form } = toRefs(props);
+const v$ = useVuelidate(rules, form);
 
 
 </script>
+
+
 
 <style scoped>
 .inputs-box {
