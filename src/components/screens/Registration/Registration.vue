@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PersonalData from "./components/PersonalData.vue";
 import Address from "./components/Address.vue";
@@ -60,7 +60,7 @@ import CPStepper from "@/components/Stepper/CPStepper.vue";
 import CPBackground from '@/components/Background/CPBackground.vue';
 import CPButton from '@/components/Button/CPButton.vue';
 import { useVuelidate } from '@vuelidate/core';
-import { required, helpers } from '@vuelidate/validators';
+import { required } from '@vuelidate/validators';
 
 const router = useRouter();
 const selectedOption = ref(true);
@@ -83,26 +83,25 @@ const form = ref({
     network: "",
 });
 
-const requiredMessage = helpers.withMessage('Este campo é obrigatório', required);
-
-const rules = computed(() => ({
-    name: { required: requiredMessage },
-    date: { required: requiredMessage },
-    gender: { required: requiredMessage },
-    document: { required: requiredMessage },
-    number: { required: requiredMessage },
-    complement: { required: requiredMessage },
-    neighborhood: { required: requiredMessage },
-    area: { required: requiredMessage },
-    specialty: { required: requiredMessage },
-    phone: { required: requiredMessage },
-    network: { required: requiredMessage },
-}));
+const rules = {
+    name: { required },
+    date: { required },
+    gender: { required },
+    document: { required },
+    number: { required },
+    complement: { required },
+    neighborhood: { required },
+    area: { required },
+    specialty: { required },
+    phone: { required },
+    network: { required },
+};
 
 const v$ = useVuelidate(rules, form);
 
+const isValid = v$.value.$validate();
+
 async function handleSubmit() {
-    const isValid = await v$.value.$validate();
 
     if (isValid) {
         type.value = selectedOption.value ? 'cliente' : 'profissional';

@@ -55,15 +55,13 @@ const v$ = useVuelidate(rules, form);
 
 const fetchAddress = async () => {
   const cep = form.value.number.replace(/\D/g, '');
-  if (cep.length === 8) {
-    try {
+  try {
       const response = await axios.get(`https://opencep.com/v1/${cep}`);
       form.value.complement = response.data.logradouro || form.value.complement;
       form.value.neighborhood = response.data.bairro || form.value.neighborhood;
     } catch (error) {
       console.error(error);
     }
-  }
 };
 </script>
 
