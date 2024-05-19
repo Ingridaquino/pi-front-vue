@@ -1,19 +1,16 @@
 <template>
     <div class="inputs-gridA">
-        <CPInput 
-            v-model="form.phone" 
-            label="Telefone *" 
-            type="text" 
-            v-mask-phone.br 
-            :error-messages="v$.phone.$errors.length ? (v$.phone.$errors.find(e => e.$message)?.$message || '') : ''"
-        />
+        <CPInput v-model="form.phone" label="Telefone *" type="text" v-mask-phone.br
+            :error-messages="v$.phone.$errors.length ? (v$.phone.$errors.find(e => e.$message)?.$message || '') : ''" append-inner-icon="mdi-phone" />
+        <CPInput v-model="form.whatsapp" label="WhatsApp" type="text" append-inner-icon="mdi-whatsapp" />
 
-        <CPInput 
-            v-model="form.network" 
-            label="Rede Social *" 
-            type="text" 
-            :error-messages="v$.network.$errors.length ? (v$.network.$errors.find(e => e.$message)?.$message || '') : ''"
-        />
+        <CPInput v-model="form.instagram" label="Instagram" type="text" append-inner-icon="mdi-instagram" />
+        <CPInput v-model="form.facebook" label="Facebook" type="text" append-inner-icon="mdi-facebook" />
+        <CPInput v-model="form.twitter" label="Twitter" type="text" append-inner-icon="mdi-twitter" />
+
+
+
+
     </div>
 </template>
 
@@ -27,7 +24,9 @@ const props = defineProps({
     form: {
         default: () => ({
             phone: '',
-            network: ''
+            instagram: '',
+            facebook: '',
+            whatsapp: '',
         })
     }
 });
@@ -35,8 +34,7 @@ const props = defineProps({
 const requiredMessage = helpers.withMessage('Este campo é obrigatório', required);
 
 const rules = {
-    phone: { required: requiredMessage },
-    network: { required: requiredMessage }
+    phone: { required: requiredMessage }
 };
 
 const { form } = toRefs(props);
@@ -47,11 +45,9 @@ const v$ = useVuelidate(rules, form);
 
 <style scoped>
 .inputs-gridA {
-    display: grid;
-    grid-template-columns: 1fr 1fr 200px;
-    gap: 8px;
-    margin-bottom: 70px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
 }
-
-
 </style>

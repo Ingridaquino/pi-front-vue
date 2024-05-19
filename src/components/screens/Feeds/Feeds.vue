@@ -41,14 +41,17 @@
                   </div>
   
                   <v-list-item class="mt-4">
-                    <template v-slot:title>
+                    <template v-slot:title class="mb-2">
                       <strong class="text-h6 mb-2">{{ item.name }}</strong>
                     </template>
-                    <template v-slot:subtitle>
+                    <template v-slot:subtitle >
                       {{ item.area }}
                     </template>
-                    <div class="mb-2 text-body-2">{{ item.bio }}</div>
+                    <div class="mt-2 text-body-2">{{ item.bio }}</div>
                   </v-list-item>
+                  <v-card-actions>
+                    <v-btn flat color="orange">Perfil</v-btn>
+                  </v-card-actions>
   
                 </v-card>
               </v-col>
@@ -101,7 +104,7 @@ export default {
   computed: {
     filteredProfiles() {
       return this.profiles.filter(profile => {
-        return profile.name.toLowerCase().includes(this.search.toLowerCase())
+        return profile.area.toLowerCase().includes(this.search.toLowerCase())
       })
     }
 

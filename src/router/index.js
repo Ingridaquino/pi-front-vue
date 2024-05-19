@@ -21,7 +21,15 @@ const router = createRouter({
           path: 'feeds',
           name: 'Feeds',
           component: () => import('../components/screens/Feeds/Feeds.vue')
-        }
+        },
+        {
+          path: '/profile-professional',
+          name: 'ProfessionalProfile',
+          component: () => import('../components/screens/Perfil/ProfessionalProfile.vue')
+        },
+        
+
+
       ]
     },
 

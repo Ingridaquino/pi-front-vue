@@ -8,8 +8,8 @@
                 <div class="login__container--form">
     
                         <div class="inputs">
-                            <CPInput type="email" label="E-mail" v-model="email" required/>
-                            <CPInput typew="password" label="Senha" v-model="senha" required/>
+                            <CPInput type="text" label="Usuário" v-model="user" required/>
+                            <CPInput :type="show ? 'text' : 'password'" label="Senha" v-model="senha"  :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'" required @click:append-inner="show = !show"/>
                         </div>
                         <div  class="button">
                             <CPButton text="Entrar" type="submit" variant="default" size="large"></CPButton>
@@ -30,8 +30,9 @@ import CPBackground from '@/components/Background/CPBackground.vue';
 
 import { ref } from 'vue'
 
-const email = ref('')
+const user = ref('')
 const senha = ref('')
+const show = ref(false)
 
 function login() {
     alert('aqui')

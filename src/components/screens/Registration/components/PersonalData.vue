@@ -3,7 +3,7 @@
         <div class="inputs-gridA">
             <CPInput v-model="form.name" label="Nome Completo *" type="name"  :error-messages="v$.name.$errors.length ? (v$.name.$errors.find(e => e.$message)?.$message || '') : ''"/>
             <CPInput v-model="form.document" label="CPF/CNPJ *" type="text" v-mask-cpf    :error-messages="v$.document.$errors.length ? (v$.document.$errors.find(e => e.$message)?.$message || '') : ''"/>
-            <CPInput v-model="form.date" label="Data de Nascimento *" type="date" min="1899-12-30" max="2001-12-30" required  />
+            <CPInput v-model="form.date" label="Data de Nascimento *" type="date" min="1899-12-30" max="2009-12-30" required  />
             <CPSelect v-model="form.gender" label="Gênero *" :options="genders"  />
         </div>
         <div class="inputs-gridB">
