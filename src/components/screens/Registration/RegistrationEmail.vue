@@ -5,54 +5,27 @@
       <CPStepper text="E-mail e Senha" />
       <form @submit.prevent="handleSubmit">
         <div class="inputs">
-          <CPInput
-            label="Digite seu usuário *"
-            v-model="form.user"
-            :error-messages="v$.user.$errors.map((e) => e.$message)"
-            append-inner-icon="mdi-account"
-          />
-          <CPInput
-            label="Digite seu e-mail *"
-            v-model="form.email"
-            :error-messages="v$.user.$errors.map((e) => e.$message)"
-            append-inner-icon="mdi-email"
-          />
+          <CPInput label="Digite seu usuário *" v-model="form.user"
+            :error-messages="v$.user.$errors.map((e) => e.$message)" append-inner-icon="mdi-account" />
+          <CPInput label="Digite seu e-mail *" v-model="form.email"
+            :error-messages="v$.user.$errors.map((e) => e.$message)" append-inner-icon="mdi-email" />
           <div class="divider">
             <v-divider class="border-opacity-50"></v-divider>
           </div>
-          <CPInput
-            label="Digite a senha *"
-            v-model="form.password"
-            type="password"
-            :error-messages="v$.password.$errors.map((e) => e.$message)"
-            append-inner-icon="mdi-lock"
-          />
+          <CPInput label="Digite a senha *" v-model="form.password" type="password"
+            :error-messages="v$.password.$errors.map((e) => e.$message)" append-inner-icon="mdi-lock" />
           <div>
-            <v-checkbox v-validate=" 'required' "
-            label="Concorda com os Termos?" 
-            v-model=" form.agreeToTerms " 
-            :rules="[v$.agreeToTerms.required] " />
+            <v-checkbox v-validate="'required'" label="Concorda com os Termos?" v-model="form.agreeToTerms"
+              :rules="[v$.agreeToTerms.required]" />
           </div>
         </div>
 
         <div class="registration--button">
-          <CPButton
-            text="Salvar"
-            type="submit"
-            size="small"
-            variant="default"
-          />
+          <CPButton text="Salvar" type="submit" size="small" variant="default" />
         </div>
       </form>
     </div>
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="18000000"
-      vertical
-      color="snackbar"
-      top
-      right
-    >
+    <v-snackbar v-model="snackbar" :timeout="18000000" vertical color="snackbar" top right>
       {{ snackbarMessage }}
       <template v-slot:actions>
         <v-btn color="primary" text @click="snackbar = false"> Fechar </v-btn>
@@ -124,29 +97,64 @@ async function handleSubmit() {
 async function createdProfile() {
   const formData = JSON.parse(localStorage.getItem("formData"));
   const profile = JSON.parse(localStorage.getItem("type"));
+  const savedPhotoUrl = localStorage.getItem('photoUrl');
 
-  let data = {
-    ...form.value,
-    ...formData,
-  };
-
-  if (formData) {
-    await axios
-      .post(`localhost:5000/${profile}`, data)
-      .then((response) => {
-        snackbarMessage.value = "Data sent successfully!";
-        snackbar.value = true;
-      })
-      .catch((error) => {
-        snackbarMessage.value = "Failed to send data";
-        snackbar.value = true;
-        console.error(error);
-      });
-  } else {
+  if (!formData) {
     snackbarMessage.value = "No data found in localStorage";
     snackbar.value = true;
+    return;
+  }
+
+  if (!profile) {
+    snackbarMessage.value = "Profile type not found in localStorage";
+    snackbar.value = true;
+    return;
+  }
+
+  let data = {
+    contato: {
+      email: form.value.email,
+      facebook: formData.facebook,
+      instagram: formData.instagram,
+      twitter: formData.twitter,
+      whatsapp: formData.whatsapp,
+      telefone: formData.phone,
+    },
+    endereco: {
+      bairro: formData.neighborhood,
+      cep: formData.cep,
+      cidade: formData.city,
+      estado: formData.state,
+      rua: formData.complement,
+      numero: formData.number,
+    },
+    foto: savedPhotoUrl,
+    genero: formData.gender,
+    nome: formData.name,
+    nascimento: formData.date,
+    senha: form.value.password,
+    usuario: form.value.user,
+  };
+
+  if (profile === "profissional") {
+    data = {
+      ...data,
+      area: formData.area,
+      habilidades: formData.specialty,
+    };
+  }
+
+  try {
+    await axios.post(`/${profile}`, data);
+    snackbarMessage.value = "Profile created successfully";
+    snackbar.value = true;
+  } catch (error) {
+    snackbarMessage.value = "Failed to send data";
+    snackbar.value = true;
+    console.error("Error sending data:", error);
   }
 }
+
 </script>
 
 <style scoped>

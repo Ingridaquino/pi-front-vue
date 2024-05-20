@@ -27,6 +27,7 @@ const props = defineProps({
             instagram: '',
             facebook: '',
             whatsapp: '',
+            twitter: ''
         })
     }
 });

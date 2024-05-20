@@ -74,13 +74,25 @@ const form = ref({
     date: "",
     gender: "",
     document: "",
+
     number: "",
     complement: "",
     neighborhood: "",
+    cep: '',
+    city: '',
+    state: '',
+
     area: "",
     specialty: "",
+
     phone: "",
-    network: "",
+    instagram: '',
+    facebook: '',
+    whatsapp: '',
+    twitter: '',
+
+
+    photo: '',
 });
 
 const rules = {
@@ -95,6 +107,10 @@ const rules = {
     specialty: { required },
     phone: { required },
     network: { required },
+    cep: { required },
+    city: { required },
+    state: { required },
+    
 };
 
 const v$ = useVuelidate(rules, form);

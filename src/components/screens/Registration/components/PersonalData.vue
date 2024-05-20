@@ -26,7 +26,7 @@ const props = defineProps({
             name: '',
             document: '',  
             date: '',
-            gender: '' 
+            gender: '',
         })
     }
 });
