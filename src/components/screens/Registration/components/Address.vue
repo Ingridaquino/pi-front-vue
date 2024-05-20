@@ -78,8 +78,6 @@ const fetchAddress = async () => {
   const numberCep = form.value.cep.replace(/\D/g, '');
   try {
       const { data } = await axios.get(`https://opencep.com/v1/${numberCep}`);
-      console.log(data);
-
         form.value.neighborhood = data.bairro;
         form.value.city = data.localidade;
         form.value.complement = data.logradouro;

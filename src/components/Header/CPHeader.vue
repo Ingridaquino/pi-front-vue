@@ -4,11 +4,11 @@
       <v-app-bar color="primary" prominent>
         <v-col sm="2">
           <v-avatar size="40px" @click="drawer = !drawer" class="cursor-pointer">
-            <v-img alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"></v-img>
+            <v-img :src="avatar" alt="Avatar"></v-img>
           </v-avatar>
         </v-col>
 
-        <v-toolbar-title>{{ Nome }}</v-toolbar-title>
+        <v-toolbar-title>{{ name }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -17,7 +17,7 @@
       <v-navigation-drawer class="bg-primary" v-model="drawer">
         <v-list class="py-10">
           <v-list-item v-if="$route.path === '/home/feeds'" prepend-icon="mdi-account-box" title="Perfil"
-            @click="$router.push('/profile-professional'); drawer = false;">
+            @click="$router.push('/user'); drawer = false;">
           </v-list-item>
           <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds"
             @click="$router.push('/home/feeds'); drawer = false;">
@@ -51,8 +51,17 @@ const router = useRouter();
 export default {
   data() {
     return {
-      drawer: false
+      drawer: false,
+      avatar: '',
+      name: '',
     };
+  },
+  created() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.avatar) {
+      this.avatar = user.avatar;
+      this.name = user.name;
+    }
   },
 
   methods: {

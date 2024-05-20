@@ -97,11 +97,22 @@
 import professionals from '../../../services/api/professionals'
 import CardRatings from './components/CardRatings.vue'
 
+import axios from "axios";
+
 export default {
   data() {
     return {
       search: '',
       profiles: professionals
+    }
+  },
+
+  async created() {
+    try {
+      const response = await axios.get('/profissional');
+      this.profiles = response.data;
+    } catch (error) {
+      console.error(error);
     }
   },
 

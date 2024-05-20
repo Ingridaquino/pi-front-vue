@@ -47,10 +47,10 @@
 import CPInput from '@/components/Input/CPInput.vue'
 import CPButton from '@/components/Button/CPButton.vue'
 import CPBackground from '@/components/Background/CPBackground.vue';
+import axios from "axios";
 
 import { useRouter } from 'vue-router';
 import { ref } from 'vue'
-
 const router = useRouter();
 
 const user = ref('')
@@ -71,6 +71,10 @@ const login = async () => {
 
     if (response.data.success) {
       router.push('/home/feeds');
+
+      const userResponse = await axios.get(`/${perfil.value}/${response.data.id}`);
+
+      localStorage.setItem('user', JSON.stringify(userResponse.data));
     }
   } catch (error) {
     snackbar.value = true;

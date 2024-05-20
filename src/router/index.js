@@ -23,6 +23,11 @@ const router = createRouter({
           component: () => import('../components/screens/Feeds/Feeds.vue')
         },
         {
+          path: '/user',
+          name: 'User',
+          component: () => import('../components/screens/Perfil/userProfile.vue')
+        },
+        {
           path: '/profile-professional',
           name: 'ProfessionalProfile',
           component: () => import('../components/screens/Perfil/ProfessionalProfile.vue')
