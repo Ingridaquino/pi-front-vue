@@ -48,7 +48,10 @@ import CPInput from '@/components/Input/CPInput.vue'
 import CPButton from '@/components/Button/CPButton.vue'
 import CPBackground from '@/components/Background/CPBackground.vue';
 
+import { useRouter } from 'vue-router';
 import { ref } from 'vue'
+
+const router = useRouter();
 
 const user = ref('')
 const senha = ref('')
@@ -56,21 +59,24 @@ const snackbar = ref(false)
 const show = ref(false)
 const perfil = ref('')
 
-const login = async () => {
-    let data = {
-        usuario: user.value,
-        senha: senha.value,
-        tipo: perfil.value
-    }
-    try {
-        const response = await axios.get('/login', data);
 
-        if (response.data.success) {
-            snackbar.value = true;
-        }
-    } catch (error) {
-        console.error(error);
+const login = async () => {
+  let data = {
+    usuario: user.value,
+    senha: senha.value,
+    tipo: perfil.value
+  }
+  try {
+    const response = await axios.get('/login', data);
+
+    if (response.data.success) {
+      router.push('/home/feeds');
     }
+  } catch (error) {
+    snackbar.value = true;
+    snackbarMessage.value = 'Ocorreu um erro ao fazer login. Por favor, tente novamente.';
+    console.error(error);
+  }
 }
 </script>
 
