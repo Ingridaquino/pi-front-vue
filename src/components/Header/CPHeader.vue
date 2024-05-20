@@ -11,19 +11,24 @@
         <v-toolbar-title>{{ Nome }}</v-toolbar-title>
 
         <v-spacer></v-spacer>
-  
+
       </v-app-bar>
 
       <v-navigation-drawer class="bg-primary" v-model="drawer">
-        <v-list class="py-10"> 
-          <v-list-item prepend-icon="mdi-view-dashboard" title="Dashboard"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-box" title="Account"></v-list-item>
-          <v-list-item prepend-icon="mdi-gavel" title="Admin"></v-list-item>
+        <v-list class="py-10">
+          <v-list-item v-if="$route.path === '/home/feeds'" prepend-icon="mdi-account-box" title="Perfil"
+            @click="$router.push('/profile-professional'); drawer = false;">
+          </v-list-item>
+          <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds"
+            @click="$router.push('/home/feeds'); drawer = false;">
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="drawer = false;">
+          </v-list-item>
         </v-list>
 
         <template v-slot:append>
           <div class="pa-10">
-            <v-btn block>
+            <v-btn block @click="logout">
               Logout
             </v-btn>
           </div>
@@ -38,11 +43,25 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter();
+
 export default {
   data() {
     return {
       drawer: false
     };
+  },
+
+  methods: {
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    }
   }
 };
+
+
 </script>

@@ -1,27 +1,47 @@
-
 <template>
-    <div class="login__container">
-       <CPBackground />
+  <div class="login__container">
+    <CPBackground />
 
-        <div class="login__container__box">
-            <form @submit.prevent="login">
-                <div class="login__container--form">
-    
-                        <div class="inputs">
-                            <CPInput type="text" label="Usuário" v-model="user" required/>
-                            <CPInput :type="show ? 'text' : 'password'" label="Senha" v-model="senha"  :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'" required @click:append-inner="show = !show"/>
-                        </div>
-                        <div  class="button">
-                            <CPButton text="Entrar" type="submit" variant="default" size="large"></CPButton>
-                        </div>
-    
-                        <span>Não é cadastrado? <a href="/register">Cadastre-se.</a></span>
-                </div>
+    <div class="login__container__box">
+      <form @submit.prevent="login">
+        <div class="login__container--form">
+          <div class="inputs">
+            <CPInput type="text" label="Usuário" v-model="user" required />
+            <CPInput
+              :type="show ? 'text' : 'password'"
+              label="Senha"
+              v-model="senha"
+              :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+              required
+              @click:append-inner="show = !show"
+            />
+            <v-select
+                :items="['Profissional', 'Cliente' ]"
+                label="Tipo de Perfil"
+                v-model="perfil"
+                required
+                variant="outlined" 
+            ></v-select>
+            </div>
+          <div class="button">
+            <CPButton
+              text="Entrar"
+              type="submit"
+              variant="default"
+              size="large"
+            ></CPButton>
+          </div>
 
-            </form>
+          <span>Não é cadastrado? <a href="/register">Cadastre-se.</a></span>
         </div>
-
+      </form>
     </div>
+
+    <v-snackbar v-model="snackbar" color="success">
+      Login bem-sucedido!
+      <v-btn color="white" text @click="snackbar = false"> Fechar </v-btn>
+    </v-snackbar>
+  </div>
 </template>
 <script setup>
 import CPInput from '@/components/Input/CPInput.vue'
@@ -32,24 +52,35 @@ import { ref } from 'vue'
 
 const user = ref('')
 const senha = ref('')
+const snackbar = ref(false)
 const show = ref(false)
+const perfil = ref('')
 
-function login() {
-    alert('aqui')
+const login = async () => {
+    let data = {
+        usuario: user.value,
+        senha: senha.value,
+        tipo: perfil.value
+    }
+    try {
+        const response = await axios.get('/login', data);
+
+        if (response.data.success) {
+            snackbar.value = true;
+        }
+    } catch (error) {
+        console.error(error);
+    }
 }
-
-
 </script>
-
 
 <style>
 .login__container {
-    display: grid;
-    grid-template-columns: 330px 1fr;
-    width: 100vw;
-    height: 100vh;
+  display: grid;
+  grid-template-columns: 330px 1fr;
+  width: 100vw;
+  height: 100vh;
 }
-
 
 .login__container__box {
   display: flex;
@@ -59,29 +90,29 @@ function login() {
 }
 
 .login__container--form {
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .inputs {
-    width: 400px;
-    margin-bottom: 60px;
+  width: 400px;
+  margin-bottom: 60px;
 }
 
 .button {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 span {
-    font-size: 12px;
-    
-    a {
-        text-decoration: none;
-        font-weight: 600;
-        color: var(--color-primary);
-    }
+  font-size: 12px;
+
+  a {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
 }
 </style>

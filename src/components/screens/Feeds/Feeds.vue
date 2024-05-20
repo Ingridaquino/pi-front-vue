@@ -56,7 +56,11 @@
                 </v-card>
               </v-col>
             </v-row>
+          
+
+          
           </v-container>
+
         </template>
   
         <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
@@ -91,6 +95,7 @@
 
 <script>
 import professionals from '../../../services/api/professionals'
+import CardRatings from './components/CardRatings.vue'
 
 export default {
   data() {

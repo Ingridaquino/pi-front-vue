@@ -1,9 +1,15 @@
 <template>
     <div class="profile__container">
         <CardProfile />
-        <div class="">
+        <div class="textarea__flexA">
             <v-textarea label="Sobre" variant="solo" :value="sobre" name="input-7-4"></v-textarea>
+            <v-textarea label="Avaliações" variant="solo" :value="avaliacoes" name="input-7-4"></v-textarea>
         </div>
+        <div class="flex">
+            <v-textarea label="Portfólio" variant="solo" :value="portfolio" name="input-7-4"></v-textarea>
+            <v-textarea label="Projetos" variant="solo" :value="projetos" name="input-7-4"></v-textarea>
+        </div>
+
 
     </div>
 </template>
@@ -20,7 +26,18 @@ const projetos = ref([])
 <style scoped>
 .profile__container {
     padding: 20px;
+}
 
+.textarea__flexA {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 20px;
+}
+
+.flex {
+    padding: 0 20px;
+    height: 100vh;
 }
 
 </style>
