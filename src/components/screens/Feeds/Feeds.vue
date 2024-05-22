@@ -109,7 +109,12 @@ export default {
 
   async created() {
     try {
-      const response = await axios.get('http://localhost:5000/PROFISSIONAL');
+      const token = localStorage.getItem('token');
+      const response = await axios({
+        method: 'get',
+        url: 'http://localhost:5000/profissional',
+        headers: { 'token': token }
+      });
       this.profiles = response.data;
     } catch (error) {
       console.error(error);

@@ -145,7 +145,7 @@ async function createdProfile() {
   }
 
   try {
-    await axios.post(`http://localhost:5000/${profile.value.toLocaleLowerCase()}`, data);
+    await axios.post(`http://localhost:5000/${profile.value}`, data);
     snackbarMessage.value = "Profile created successfully";
     snackbar.value = true;
   } catch (error) {

@@ -136,7 +136,7 @@ onMounted(async () => {
     const token = localStorage.getItem('token');
     const response = await fetch('/usuario', {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'token': token
         }
     });
     const data = await response.json();
@@ -149,7 +149,7 @@ async function handleUpdate() {
     const response = await fetch('/usuario', {
         method: 'PUT',
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'token': token,
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(form.value)

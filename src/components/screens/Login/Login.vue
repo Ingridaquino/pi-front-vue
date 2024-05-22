@@ -51,15 +51,20 @@ const login = async () => {
     tipo: perfil.value
   }
   try {
-    const response = await axios.post('http://localhost:5000/LOGIN', data);
-
+    const response = await axios.post('http://localhost:5000/login', data);
+ 
     if (response.data.Success) {
       router.push('/home/feeds');
-      localStorage.setItem('token', JSON.stringify(response.data.Token));
-
-      const userResponse = await axios.get(`http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`, { headers: { "TOKEN": response.data.Token } });
+      localStorage.setItem('token', response.data.Token);
+ 
+      const userResponse = await axios({
+        method: 'get',
+        url: `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`,
+        headers: { 'token': response.data.Token }
+      });
+ 
       localStorage.setItem('user', JSON.stringify(userResponse.data.Data));
-
+ 
       snackbar.value = true;
     }
   } catch (error) {

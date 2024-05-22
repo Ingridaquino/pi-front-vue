@@ -70,7 +70,7 @@ export default {
   created() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.avatar) {
-      this.avatar = `data:image/jpeg;base64,${user.avatar}`;
+      this.avatar = user.avatar;
       this.name = user.name;
     }
   },
@@ -87,7 +87,7 @@ export default {
     const response = await fetch('/usuario', {
         method: 'DELETE',
         headers: {
-            'Authorization': `Bearer ${token}`
+          'token': token,
         }
     });
 
