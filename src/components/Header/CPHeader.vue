@@ -14,7 +14,7 @@
 
       </v-app-bar>
 
-      <v-navigation-drawer class="bg-primary" v-model="drawer">
+      <v-navigation-drawer class="bg-primary" v-model="drawer" temporary>
         <v-list class="py-10">
           <v-list-item v-if="$route.path === '/home/feeds'" prepend-icon="mdi-account-box" title="Perfil"
             @click="$router.push('/user'); drawer = false;">
@@ -22,16 +22,17 @@
           <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds"
             @click="$router.push('/home/feeds'); drawer = false;">
           </v-list-item>
-          <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="drawer = false;">
-          </v-list-item>
-        </v-list>
-
-        <template v-slot:append>
-          <div class="pa-10">
-            <v-btn block @click="logout">
-              Logout
-            </v-btn>
-          </div>
+          <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="$router.push('/editar-perfil'); drawer = false;">
+          </v-list-item>        
+      </v-list>
+      
+      <template v-slot:append>
+        <div class="pa-10">
+          <v-btn block @click="logout">
+            Logout
+          </v-btn>
+          <v-btn class="mt-2" block color="error" @click="handleDelete">Deletar</v-btn>
+        </div>
         </template>
       </v-navigation-drawer>
 
@@ -40,6 +41,15 @@
       </v-main>
     </v-layout>
   </v-card>
+
+  <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right> 
+    {{ snackbarMessage }}
+    <template v-slot:actions>
+        <v-btn color="primary" text @click="snackbar = false">
+            Fechar
+        </v-btn>
+    </template>
+</v-snackbar>
 </template>
 
 <script>
@@ -54,12 +64,13 @@ export default {
       drawer: false,
       avatar: '',
       name: '',
+      snackbar: false,
     };
   },
   created() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.avatar) {
-      this.avatar = user.avatar;
+      this.avatar = `data:image/jpeg;base64,${user.avatar}`;
       this.name = user.name;
     }
   },
@@ -68,7 +79,28 @@ export default {
     logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+
+
+    async handleDelete() {
+    const token = localStorage.getItem('token');
+    const response = await fetch('/usuario', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (response.ok) {
+        this.snackbarMessage = 'Perfil deletado com sucesso!';
+        this.snackbar= true;
+        localStorage.removeItem('token');
+        this.router.push('/login');
+    } else {
+        this.snackbarMessage = 'Erro ao deletar o perfil!';
+        this.snackbar= true;
     }
+}
   }
 };
 

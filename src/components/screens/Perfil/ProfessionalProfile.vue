@@ -14,12 +14,29 @@
 
 <script setup>
 import CardProfile from './components/CardProfile.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
 
+const route = useRoute()
 const sobre = ref('')
 const avaliacoes = ref([])
 const portfolio = ref([])
 const projetos = ref([])
+
+onMounted(async () => {
+  const id = route.params.id
+  try {
+    const response = await axios.get(`professional/${id}`)
+
+    sobre.value = response.data.sobre
+    avaliacoes.value = response.data.avaliacoes
+    portfolio.value = response.data.portfolio
+    projetos.value = response.data.projetos
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <style scoped>

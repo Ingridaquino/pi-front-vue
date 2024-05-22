@@ -7,29 +7,13 @@
         <div class="login__container--form">
           <div class="inputs">
             <CPInput type="text" label="Usuário" v-model="user" required />
-            <CPInput
-              :type="show ? 'text' : 'password'"
-              label="Senha"
-              v-model="senha"
-              :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              required
-              @click:append-inner="show = !show"
-            />
-            <v-select
-                :items="['Profissional', 'Cliente' ]"
-                label="Tipo de Perfil"
-                v-model="perfil"
-                required
-                variant="outlined" 
-            ></v-select>
-            </div>
+            <CPInput :type="show ? 'text' : 'password'" label="Senha" v-model="senha"
+              :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'" required @click:append-inner="show = !show" />
+            <v-select :items="['Profissional', 'Cliente']" label="Tipo de Perfil" v-model="perfil" required
+              variant="outlined"></v-select>
+          </div>
           <div class="button">
-            <CPButton
-              text="Entrar"
-              type="submit"
-              variant="default"
-              size="large"
-            ></CPButton>
+            <CPButton text="Entrar" type="submit" variant="default" size="large"></CPButton>
           </div>
 
           <span>Não é cadastrado? <a href="/register">Cadastre-se.</a></span>
@@ -67,19 +51,20 @@ const login = async () => {
     tipo: perfil.value
   }
   try {
-    const response = await axios.post('http://localhost:5000/login', data);
+    const response = await axios.post('http://localhost:5000/LOGIN', data);
 
     if (response.data.Success) {
       router.push('/home/feeds');
       localStorage.setItem('token', JSON.stringify(response.data.Token));
 
-      const userResponse = await axios.get(`http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`, {headers : {"TOKEN":response.data.Token}});
+      const userResponse = await axios.get(`http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`, { headers: { "TOKEN": response.data.Token } });
       localStorage.setItem('user', JSON.stringify(userResponse.data.Data));
+
+      snackbar.value = true;
     }
   } catch (error) {
-    snackbar.value = true;
-    snackbarMessage.value = 'Ocorreu um erro ao fazer login. Por favor, tente novamente.';
     console.error(error);
+    alert('Usuário ou senha inválidos');
   }
 }
 </script>

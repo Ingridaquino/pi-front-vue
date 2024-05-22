@@ -45,7 +45,7 @@ const profissao = ref('')
 onMounted(() => {
   const user = JSON.parse(localStorage.getItem('user'));
   if (user) {
-    avatar.value = user.avatar;
+    avatar.value = `data:image/jpeg;base64,${user.avatar}`;
     nome.value = user.nome;
     profissao.value = user.profissao;
 

@@ -32,6 +32,12 @@ const router = createRouter({
           name: 'ProfessionalProfile',
           component: () => import('../components/screens/Perfil/ProfessionalProfile.vue')
         },
+        {
+          path: '/editar-perfil',
+          name: 'EditarPerfil',
+          component: () => import('../components/screens/Registration/EditarPerfil.vue')
+        },
+
         
 
 

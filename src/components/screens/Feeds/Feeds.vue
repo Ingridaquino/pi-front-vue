@@ -50,7 +50,7 @@
                     <div class="mt-2 text-body-2">{{ item.bio }}</div>
                   </v-list-item>
                   <v-card-actions>
-                    <v-btn flat color="orange">Perfil</v-btn>
+                    <v-btn flat color="orange" @click="goToProfile(item.id)">Perfil</v-btn>
                   </v-card-actions>
   
                 </v-card>
@@ -109,7 +109,7 @@ export default {
 
   async created() {
     try {
-      const response = await axios.get('/profissional');
+      const response = await axios.get('http://localhost:5000/PROFISSIONAL');
       this.profiles = response.data;
     } catch (error) {
       console.error(error);
@@ -123,9 +123,14 @@ export default {
         return profile.area.toLowerCase().includes(this.search.toLowerCase())
       })
     }
-
-    
+  },
+  methods: {
+  goToProfile(profileId) {
+    this.$router.push({ name: 'profile-professional', params: { id: profileId } });
   }
+}
+
+  
 }
 </script>
 
