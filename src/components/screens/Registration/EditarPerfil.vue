@@ -4,7 +4,7 @@
 
         <div class="registration__boxes">
             <div class="box-switch">
-               <p>Editar cadastro</p>
+                <p>Editar cadastro</p>
             </div>
 
             <div class="professional__container--inputs">
@@ -19,8 +19,8 @@
                         <Address :form="form" />
                     </div>
 
-                    <CPStepper text="Dados Profissionais" v-if="!selectedOption" />
-                    <div class="inputs" v-if="!selectedOption">
+                    <CPStepper text="Dados Profissionais" v-if="type === 'Profissional'" />
+                    <div class="inputs" v-if="type === 'Profissional'">
                         <ProfessionalDetails :form="form" />
                     </div>
 
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right> 
+        <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right>
             {{ snackbarMessage }}
             <template v-slot:actions>
                 <v-btn color="primary" text @click="snackbar = false">
@@ -47,7 +47,7 @@
     </div>
 </template>
 
-<script  setup>
+<script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PersonalData from "./components/PersonalData.vue";
@@ -64,35 +64,30 @@ import { onMounted } from 'vue';
 
 const router = useRouter();
 const selectedOption = ref(true);
-const type = ref('');
+const type = ref(localStorage.getItem('tipo'));
 
 const snackbar = ref(false);
 const snackbarMessage = ref('');
 
 const form = ref({
-    name: "",
-    date: "",
-    gender: "",
-    document: "",
-
-    number: "",
-    complement: "",
-    neighborhood: "",
-    cep: '',
-    city: '',
-    state: '',
-
-    area: "",
-    specialty: "",
-
-    phone: "",
-    instagram: '',
-    facebook: '',
-    whatsapp: '',
-    twitter: '',
-
-
-    photo: '',
+name: '',
+date: '',
+gender: '',
+document: '',
+number: '',
+complement: '',
+neighborhood: '',
+cep: '',
+city: '',
+state: '',
+area: '',
+specialty: '',
+phone: '',
+instagram: '',
+facebook: '',
+whatsapp: '',
+twitter: '',
+photo: '',
 });
 
 const rules = {
@@ -110,7 +105,7 @@ const rules = {
     cep: { required },
     city: { required },
     state: { required },
-    
+
 };
 
 const v$ = useVuelidate(rules, form);
@@ -120,7 +115,7 @@ const isValid = v$.value.$validate();
 async function handleSubmit() {
 
     if (isValid) {
-      await handleUpdate();
+        await handleUpdate();
 
         snackbarMessage.value = 'Salvo!';
         snackbar.value = true;
@@ -132,26 +127,41 @@ async function handleSubmit() {
     }
 }
 
-onMounted(async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch('/usuario', {
-        headers: {
-            'token': token
-        }
-    });
-    const data = await response.json();
+onMounted(() => {
+    const userData = JSON.parse(localStorage.getItem('user'))[0];
 
-    form.value = data;
+    name.value = userData.nome;
+    date.value = userData.nascimento;
+    gender.value = userData.genero;
+    document.value = userData.documento;
+    number.value = userData.numero;
+    complement.value = userData.rua;
+    neighborhood.value = userData.bairro;
+    cep.value = userData.cep;
+    city.value = userData.cidade;
+    state.value = userData.estado;
+    area.value = userData.atuacao;
+    phone.value = userData.telefone;
+    instagram.value = userData.instagram;
+    facebook.value = userData.facebook;
+    whatsapp.value = userData.whatsapp;
+    twitter.value = userData.twitter;
+    photo.value = userData.foto;
+
 });
 
 async function handleUpdate() {
     const token = localStorage.getItem('token');
-    const response = await fetch('/usuario', {
+    const tipo = localStorage.getItem('tipo');
+
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user[0];
+
+
+
+    const response = await fetch(`http://localhost:5000/${tipo}?_id${userId._id}`, {
         method: 'PUT',
-        headers: {
-            'token': token,
-            'Content-Type': 'application/json'
-        },
+        headers: { 'token': token },
         body: JSON.stringify(form.value)
     });
 
@@ -175,6 +185,8 @@ async function handleUpdate() {
     grid-template-columns: 330px 1fr;
     width: 100vw;
     height: 100vh;
+
+    overflow-y: scroll;
 }
 
 .box-switch {

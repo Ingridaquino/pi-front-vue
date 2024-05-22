@@ -21,11 +21,6 @@
                         <Address :form="form" />
                     </div>
 
-                    <CPStepper text="Dados Profissionais" v-if="!selectedOption" />
-                    <div class="inputs" v-if="!selectedOption">
-                        <ProfessionalDetails :form="form" />
-                    </div>
-
                     <CPStepper text="Contatos" />
                     <div class="inputs">
                         <Contacts :form="form" />
@@ -82,7 +77,7 @@ const form = ref({
     city: '',
     state: '',
 
-    area: "",
+    area: [],
     specialty: "",
 
     phone: "",

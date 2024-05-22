@@ -44,23 +44,30 @@ const show = ref(false)
 const perfil = ref('')
 
 
+
 const login = async () => {
   let data = {
     usuario: user.value,
     senha: senha.value,
     tipo: perfil.value
   }
+
+  localStorage.setItem('tipo', perfil.value);
   try {
     const response = await axios.post('http://localhost:5000/login', data);
  
     if (response.data.Success) {
-      router.push('/home/feeds');
+      
       localStorage.setItem('token', response.data.Token);
  
       const userResponse = await axios({
         method: 'get',
         url: `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`,
         headers: { 'token': response.data.Token }
+      }); 
+
+      router.push('/home/feeds').then(() => {
+        location.reload();
       });
  
       localStorage.setItem('user', JSON.stringify(userResponse.data.Data));

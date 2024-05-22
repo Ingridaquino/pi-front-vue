@@ -25,44 +25,35 @@
           <v-container class="pa-2" fluid>
             <v-row dense>
               <v-col
-              v-for="(item, index) in filteredProfiles"
-              :key="index"
-              cols="4"             
+                v-for="(item, index) in filteredProfiles"
+                :key="index"
+                cols="4"
               >
                 <v-card class="pb-3" border flat>
-                  <div class="feeds--bg"></div>
-
-                  <div class="feeds__avatar">
-                    <v-avatar 
-                    size="50px">
-                      <v-img :src="item.img"></v-img>
-                    </v-avatar>
-
+                  <div class="feeds--bg">
                   </div>
-  
+                  <div class="feeds__avatar">
+                    <v-avatar size="77px">
+                      <v-img :src="item.foto"></v-img>
+                    </v-avatar>
+                  </div>
                   <v-list-item class="mt-4">
                     <template v-slot:title class="mb-2">
-                      <strong class="text-h6 mb-2">{{ item.name }}</strong>
+                      <strong class="text-h6 mb-2">{{ item.nome }}</strong>
                     </template>
-                    <template v-slot:subtitle >
+                    <template v-slot:subtitle>
                       {{ item.area }}
                     </template>
                     <div class="mt-2 text-body-2">{{ item.bio }}</div>
                   </v-list-item>
                   <v-card-actions>
-                    <v-btn flat color="orange" @click="goToProfile(item.id)">Perfil</v-btn>
+                    <v-btn flat color="orange" @click="goToProfile(item._id)">Perfil</v-btn>
                   </v-card-actions>
-  
                 </v-card>
               </v-col>
             </v-row>
-          
-
-          
           </v-container>
-
         </template>
-  
         <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
           <div class="d-flex align-center justify-center pa-4">
             <v-btn
@@ -73,11 +64,9 @@
               rounded
               @click="prevPage"
             ></v-btn>
-  
             <div class="mx-2 text-caption">
               Page {{ page }} of {{ pageCount }}
             </div>
-  
             <v-btn
               :disabled="page >= pageCount"
               density="comfortable"
@@ -94,19 +83,15 @@
 </template>
 
 <script>
-import professionals from '../../../services/api/professionals'
-import CardRatings from './components/CardRatings.vue'
-
-import axios from "axios";
+import axios from 'axios';
 
 export default {
   data() {
     return {
       search: '',
-      profiles: professionals
-    }
+      profiles: []
+    };
   },
-
   async created() {
     try {
       const token = localStorage.getItem('token');
@@ -115,46 +100,44 @@ export default {
         url: 'http://localhost:5000/profissional',
         headers: { 'token': token }
       });
-      this.profiles = response.data;
+      this.profiles = response.data.Data;
+
+
     } catch (error) {
       console.error(error);
     }
   },
-
-
   computed: {
     filteredProfiles() {
-      return this.profiles.filter(profile => {
-        return profile.area.toLowerCase().includes(this.search.toLowerCase())
-      })
+      return this.profiles.filter(profile =>
+        profile.nome.toLowerCase().includes(this.search.toLowerCase())
+      );
     }
   },
   methods: {
-  goToProfile(profileId) {
-    this.$router.push({ name: 'profile-professional', params: { id: profileId } });
+    goToProfile(profileId) {
+      this.$router.push({ name: '/profile-professional', params: { id: profileId } });
+    }
   }
-}
-
-  
-}
+};
 </script>
 
 <style scoped>
-.feeds__container {
-  padding: 40px;
-}
 
 .feeds--bg {
   display: flex;
   justify-content:flex-start;
-  height: 50px;
+  height: 150px;
   background-color: var(--color-secondary);
+
 }
+
+
 
 .feeds__avatar {
  position: absolute;
- top: 20px;
- left: 10px;
+ top: 89px;
+ left: 12px;
 }
 </style>
 

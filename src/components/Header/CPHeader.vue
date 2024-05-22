@@ -2,13 +2,14 @@
   <v-card>
     <v-layout>
       <v-app-bar color="primary" prominent>
-        <v-col sm="2">
-          <v-avatar size="40px" @click="drawer = !drawer" class="cursor-pointer">
+        <v-col sm="1">
+          <v-avatar size="40px" @click="drawer = true" class="cursor-pointer">
             <v-img :src="avatar" alt="Avatar"></v-img>
           </v-avatar>
         </v-col>
 
         <v-toolbar-title>{{ name }}</v-toolbar-title>
+
 
         <v-spacer></v-spacer>
 
@@ -17,22 +18,20 @@
       <v-navigation-drawer class="bg-primary" v-model="drawer" temporary>
         <v-list class="py-10">
           <v-list-item v-if="$route.path === '/home/feeds'" prepend-icon="mdi-account-box" title="Perfil"
-            @click="$router.push('/user'); drawer = false;">
+            @click="navigateTo('/user')">
           </v-list-item>
-          <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds"
-            @click="$router.push('/home/feeds'); drawer = false;">
+          <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds" @click="navigateTo('/home/feeds')">
           </v-list-item>
-          <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="$router.push('/editar-perfil'); drawer = false;">
-          </v-list-item>        
-      </v-list>
-      
-      <template v-slot:append>
-        <div class="pa-10">
-          <v-btn block @click="logout">
-            Logout
-          </v-btn>
-          <v-btn class="mt-2" block color="error" @click="handleDelete">Deletar</v-btn>
-        </div>
+        <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="showSnackbar">
+          </v-list-item>
+        </v-list>
+
+        <template v-slot:append>
+          <div class="pa-10">
+            <v-btn block @click="logout">
+              Logout
+            </v-btn>
+          </div>
         </template>
       </v-navigation-drawer>
 
@@ -42,21 +41,18 @@
     </v-layout>
   </v-card>
 
-  <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right> 
+  <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right>
     {{ snackbarMessage }}
     <template v-slot:actions>
-        <v-btn color="primary" text @click="snackbar = false">
-            Fechar
-        </v-btn>
+      <v-btn color="primary" text @click="snackbar = false">
+        Fechar
+      </v-btn>
     </template>
-</v-snackbar>
+  </v-snackbar>
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
-
-
-const router = useRouter();
 
 export default {
   data() {
@@ -65,42 +61,32 @@ export default {
       avatar: '',
       name: '',
       snackbar: false,
+      snackbarMessage: '',
     };
   },
   created() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.avatar) {
-      this.avatar = user.avatar;
-      this.name = user.name;
-    }
+    const userData = JSON.parse(localStorage.getItem('user'))
+
+    let user = userData[0];
+
+    this.name = user.nome;
+    this.avatar = user.foto;
   },
 
   methods: {
     logout() {
-      localStorage.removeItem('token');
+      localStorage.clear();
       this.$router.push('/login');
     },
+    navigateTo(route) {
+      this.$router.push(route).then(() => window.location.reload());
+      this.drawer = false;
+    },
 
-
-    async handleDelete() {
-    const token = localStorage.getItem('token');
-    const response = await fetch('/usuario', {
-        method: 'DELETE',
-        headers: {
-          'token': token,
-        }
-    });
-
-    if (response.ok) {
-        this.snackbarMessage = 'Perfil deletado com sucesso!';
-        this.snackbar= true;
-        localStorage.removeItem('token');
-        this.router.push('/login');
-    } else {
-        this.snackbarMessage = 'Erro ao deletar o perfil!';
-        this.snackbar= true;
+      showSnackbar(){
+      this.snackbarMessage = 'Em construção';
+      this.snackbar = true;
     }
-}
   }
 };
 

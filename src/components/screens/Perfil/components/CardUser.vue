@@ -1,102 +1,123 @@
 <template>
-    <div class="profile__container">
-      <v-card>
-        <div class="profile-bg"></div>
-        <div class="profile__avatar">
-          <v-avatar size="100px">
-            <v-img :src="avatar"></v-img>
-          </v-avatar>
-        </div>
-        <div class="profile__flexA">
-            <v-list-item class="mt-4">
-              <template v-slot:title class="mt-3">
-                <strong class="text-h6 mb-2">{{ nome }}</strong>
-              </template>
-              <template v-slot:subtitle> {{ profissao }} </template>
-            </v-list-item>
-            <v-list-item>
-              <div class="profile__flexB"  v-for="(item, i) in items"
-              :key="i">
-                  <v-icon v-if="item.title">{{ item.icon }}</v-icon>
-                  <p class="ml-2" v-if="item.title">{{ item.title }}</p>
-              </div>
+  <div class="profile__container">
+    <v-card>
+      <div class="profile-bg"></div>
+      <div class="profile__avatar">
+        <v-avatar size="100px">
+          <v-img :src="avatar"></v-img>
+        </v-avatar>
+      </div>
+      <div class="profile__flexA">
+        <div>
+          <v-list-item class="mt-4">
+            <template v-slot:title class="mt-3">
+              <strong class="text-h6 mb-2">{{ nome }}</strong>
+            </template>
+            <template v-slot:subtitle> {{ profissao }} </template>
           </v-list-item>
-                 
         </div>
-      </v-card>
-    </div>
-  </template>
+
+        <div>
+
+          <v-list-item>
+            <div class="contato">
+              <ul>
+                <li v-for="item in items" :key="item.title">
+                  <v-icon>{{ item.icon }}</v-icon> {{ item.title }}
+                </li>
+            </ul>
+            </div>
+          </v-list-item>
+        </div>
+
+      </div>
+    </v-card>
+  </div>
+</template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const items = ref([
-  { title: '', icon: 'mdi-instagram', to: '/' },
-  { title: '', icon: 'mdi-email'},
-  { title: '', icon: 'mdi-facebook'},
-  { title: '', icon: 'mdi-twitter'},
-  { title: '', icon: 'mdi-whatsapp'}
-])
 
 const avatar = ref('')
 const nome = ref('')
 const profissao = ref('')
+let items = ref([])
+let user = null
+
 
 onMounted(() => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user) {
-    avatar.value = `data:image/jpeg;base64,${user.avatar}`;
-    nome.value = user.nome;
-    profissao.value = user.profissao;
+  const userData = JSON.parse(localStorage.getItem('user'));
+  user = userData[0];
 
-    items.value = items.value.map(item => {
-      if (item.icon === 'mdi-instagram' && user.instagram) {
-        return { ...item, title: `@${user.instagram}` };
-      } else if (item.icon === 'mdi-email' && user.email) {
-        return { ...item, title: user.email };
-      } else if (item.icon === 'mdi-facebook' && user.facebook) {
-        return { ...item, title: user.facebook };
-      } else if (item.icon === 'mdi-twitter' && user.twitter) {
-        return { ...item, title: `@${user.twitter}` };
-      } else if (item.icon === 'mdi-whatsapp' && user.whatsapp) {
-        return { ...item, title: user.whatsapp };
-      } else {
-        return item;
-      }
-    });
-  }
+  avatar.value = user.foto;
+  nome.value = user.nome;
+
+  addContactItems()
+
 });
+
+function addContactItems() {
+  const allowedKeys = ['email', 'instagram', 'whatsapp'];
+  if (user && user.contato) {
+    for (const [key, value] of Object.entries(user.contato)) {
+      if (value && allowedKeys.includes(key)) {
+        items.value.push({
+          icon: `mdi-${key}`,
+          title: value
+        })
+      }
+    }
+  }
+}
+
 </script>
-  
-  <style scoped>
-  .profile__container {
-    width: 100%;
-  }
-  
-  .profile-bg {
-    background-color: var(--color-secondary);
-    background-size: cover;
-    background-position: center;
-    height: 180px;
-  }
-  
-  .profile__flexA{
+
+<style scoped>
+.profile__container {
+  width: 100%;
+}
+
+.profile-bg {
+  background-color: var(--color-secondary);
+  background-size: cover;
+  background-position: center;
+  height: 180px;
+}
+
+.profile__flexA {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+
+.contato {
+  width: 390px;
+
+  ul {
     display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    padding: 20px 0;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+
+
+
+    li {
+      list-style: none;
+    }
   }
-  
-  .profile__flexB {
-      display: flex;
-      flex-direction: row;
-      align-items: center;    
-  }
-  
-  
-  .profile__avatar {
-    position: absolute;
-    top: 105px;
-    left: 22px;
-  }
-  </style>
+
+
+
+}
+
+
+.profile__avatar {
+  position: absolute;
+  top: 105px;
+  left: 22px;
+}
+</style>

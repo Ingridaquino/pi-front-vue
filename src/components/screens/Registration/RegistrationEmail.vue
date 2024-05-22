@@ -50,6 +50,7 @@ import {
   minLength,
   helpers,
 } from "@vuelidate/validators";
+import router from "@/router";
 
 const requiredMessage = helpers.withMessage(
   "Este campo é obrigatório",
@@ -139,15 +140,18 @@ async function createdProfile() {
   if (profile === "profissional") {
     data = {
       ...data,
-      area: formData.area,
-      habilidades: formData.specialty,
+      atuacao: formData.area
     };
   }
-
   try {
-    await axios.post(`http://localhost:5000/${profile.value}`, data);
+    await axios.post(`http://localhost:5000/${profile}`, data);
+
     snackbarMessage.value = "Profile created successfully";
     snackbar.value = true;
+
+    localStorage.clear();
+
+    router.push("/login");
   } catch (error) {
     snackbarMessage.value = "Failed to send data";
     snackbar.value = true;

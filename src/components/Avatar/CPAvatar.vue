@@ -20,7 +20,6 @@ export default {
   },
   created() {
     this.loadPhotoFromLocalStorage();
-    this.fetchPhotoFromServer();
   },
   methods: {
     openFileInput() {
@@ -32,7 +31,7 @@ export default {
         const reader = new FileReader();
         reader.onload = (e) => {
           this.photoUrl = e.target.result;
-          localStorage.setItem('photoUrl', this.photoUrl); // Save to localStorage
+          localStorage.setItem('photoUrl', this.photoUrl)
         };
         reader.readAsDataURL(file);
       }
@@ -42,23 +41,7 @@ export default {
       if (savedPhotoUrl) {
         this.photoUrl = savedPhotoUrl;
       }
-    },
-    async fetchPhotoFromServer() {
-      try {
-        const response = await fetch('YOUR_GET_ENDPOINT_URL');
-        if (response.ok) {
-          const data = await response.json();
-          if (data.foto) {
-            this.photoUrl = data.foto;
-            localStorage.setItem('photoUrl', this.photoUrl); // Save to localStorage
-          }
-        } else {
-          console.error('Failed to fetch photo from server');
-        }
-      } catch (error) {
-        console.error('Error fetching photo from server:', error);
-      }
-    },
+    }
   },
 };
 </script>
