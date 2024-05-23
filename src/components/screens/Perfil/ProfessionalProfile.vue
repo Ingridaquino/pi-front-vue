@@ -120,7 +120,7 @@ const fetchRating = async () => {
   const token = localStorage.getItem('token');
   const id = route.params.id;
   try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/${id}`, {
+    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id${id}`, {
       headers: { 'token': token }
     });
     
