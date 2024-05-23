@@ -1,6 +1,6 @@
 <template>
     <div class="registration__container">
-        <CPBackground />
+        <div class="background"></div>
 
         <div class="registration__boxes">
             <div class="box-switch">
@@ -172,12 +172,15 @@ if (response.status >= 200 && response.status < 300) {
 
 
 <style scoped>
+.background {
+    background: var(--color-primary);
+    border-radius: 0 45px 45px 0;
+    height: 100%;
+}
+
 .registration__container {
     display: grid;
-    grid-template-columns: 330px 1fr;
-    width: 100vw;
-    height: 100vh;
-
+    grid-template-columns: 10% 1fr;
     overflow: auto;
     max-height: 100%;
 }

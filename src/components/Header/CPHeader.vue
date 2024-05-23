@@ -12,9 +12,12 @@
         <v-toolbar-title>{{ name }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-card-title class="text-h5">
-          AUTONOMIA
+          <span class="flexwork">
+            FlexW<v-icon color="#ccc" size="34">mdi-radar</v-icon>rk
+        </span>
         </v-card-title>
       </v-app-bar>
+
 
       <v-navigation-drawer class="bg-primary" v-model="drawer" temporary>
         <v-list class="py-10">
@@ -23,13 +26,13 @@
           </v-list-item>
           <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds" @click="navigateTo('/home/feeds')">
           </v-list-item>
-        <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="navigateTo('/editar-perfil')">
+          <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="navigateTo('/editar-perfil')">
           </v-list-item>
         </v-list>
 
         <template v-slot:append>
           <div class="pa-10">
-            <v-btn block @click="logout">
+            <v-btn block @click="logout" color="#FB6F0B">
               Logout
             </v-btn>
           </div>
@@ -77,14 +80,14 @@ export default {
   methods: {
     logout() {
       localStorage.clear();
-      this.$router.push('/login');
+      this.$router.push('/login').then(() => window.location.reload());
     },
     navigateTo(route) {
       this.$router.push(route).then(() => window.location.reload());
       this.drawer = false;
     },
 
-      showSnackbar(){
+    showSnackbar() {
       this.snackbarMessage = 'Em construção';
       this.snackbar = true;
     }
@@ -93,3 +96,19 @@ export default {
 
 
 </script>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap');
+.flexwork {
+  font-family: "Rowdies", sans-serif;
+  font-size: 30px;
+  color: #FB6F0B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px 0 0;
+}
+
+
+
+</style>

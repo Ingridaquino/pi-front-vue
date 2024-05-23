@@ -29,14 +29,14 @@ const props = defineProps({
 <style>
 
 .btn-default {
-    background: var(--color-primary) !important;
+    background: #FB6F0B !important;
     color: white !important;
 }
 
 
 .btn-outlined {
     background: transparent !important;
-    border: 1px solid var(--color-primary) !important;
+    border: 1px solid #FB6F0B !important;
     color: var(--color-primary) !important;
 }
 

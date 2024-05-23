@@ -1,13 +1,16 @@
 <template>
     <div class="registration__container">
-        <CPBackground />
+        <div class="background"></div>
 
         <div class="registration__boxes">
             <div class="registration--buttonVoltar">
-                <CPButton text="Voltar" @click="handleBack" size="small" variant="outlined" />
+
+                <v-btn variant="plain" color="orange" @click="handleBack" size="small">
+                    <strong>Voltar</strong>
+                </v-btn>
             </div>
             <div class="box-switch">
-                <v-switch class="my-switch" v-model="selectedOption"
+                <v-switch class="my-switch" v-model="selectedOption" color="orange"
                     :label="selectedOption ? 'Cliente' : 'Profissional'"
                     :options="['cliente', 'profissional']"></v-switch>
             </div>
@@ -38,7 +41,7 @@
             </div>
         </div>
 
-        <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right> 
+        <v-snackbar v-model="snackbar" :timeout="6000" vertical color="snackbar" top right>
             {{ snackbarMessage }}
             <template v-slot:actions>
                 <v-btn color="primary" text @click="snackbar = false">
@@ -54,10 +57,9 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import PersonalData from "./components/PersonalData.vue";
 import Address from "./components/Address.vue";
-import ProfessionalDetails from "./components/ProfessionalDetails.vue";
 import Contacts from "./components/Contacts.vue";
 import CPStepper from "@/components/Stepper/CPStepper.vue";
-import CPBackground from '@/components/Background/CPBackground.vue';
+
 import CPButton from '@/components/Button/CPButton.vue';
 import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
@@ -110,7 +112,7 @@ const rules = {
     cep: { required },
     city: { required },
     state: { required },
-    
+
 };
 
 const v$ = useVuelidate(rules, form);
@@ -145,11 +147,18 @@ async function handleSubmit() {
 
 
 <style scoped>
+.background {
+    background-color: var(--color-primary);
+    border-radius: 0 45px 45px 0;
+    height: 100%;
+
+}
+
 .registration__container {
     display: grid;
-    grid-template-columns: 330px 1fr;
-    width: 100vw;
-    height: 100vh;
+    grid-template-columns: 20% 1fr;
+    overflow: auto;
+    max-height: 100%;
 }
 
 .box-switch {
@@ -168,7 +177,7 @@ async function handleSubmit() {
 .registration--buttonVoltar {
     display: flex;
     justify-content: flex-end;
-    margin: 20px ;
+    margin: 20px;
 }
 
 

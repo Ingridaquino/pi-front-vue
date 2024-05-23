@@ -1,10 +1,12 @@
 <template>
   <div class="registration__container">
-    <CPBackground />
+    <div class="background"></div>
     <div class="registration__box">
       <div class="registration--buttonVoltar">
-        <CPButton text="Voltar" @click="handleBack" size="small" variant="outlined" />
-    </div>
+        <v-btn variant="plain" color="orange" @click="handleBack" size="small">
+          <strong>Voltar</strong>
+        </v-btn>
+      </div>
       <CPStepper text="E-mail e Senha" />
       <form @submit.prevent="handleSubmit">
         <div class="inputs">
@@ -38,7 +40,6 @@
 </template>
 
 <script setup>
-import CPBackground from "@/components/Background/CPBackground.vue";
 import CPStepper from "@/components/Stepper/CPStepper.vue";
 import CPInput from "@/components/Input/CPInput.vue";
 import CPButton from "@/components/Button/CPButton.vue";
@@ -163,19 +164,27 @@ async function createdProfile() {
 }
 
 const handleBack = () => {
-    router.go(-1)
-    localStorage.clear();
+  router.go(-1)
+  localStorage.clear();
 }
 
 </script>
 
 <style scoped>
+.background {
+  background-color: var(--color-primary);
+  border-radius: 0 45px 45px 0;
+  height: 100%;
+
+}
+
 .registration__container {
   display: grid;
-  grid-template-columns: 330px 1fr;
-  width: 100vw;
-  height: 100vh;
+  grid-template-columns: 20% 1fr;
+  overflow: auto;
+  max-height: 100%;
 }
+
 
 .registration__box {
   margin: 20px 0;
@@ -206,7 +215,6 @@ const handleBack = () => {
 .registration--buttonVoltar {
   display: flex;
   justify-content: flex-end;
-  margin: 20px 40px 0 0 ;
+  margin: 20px 40px 0 0;
 }
-
 </style>
