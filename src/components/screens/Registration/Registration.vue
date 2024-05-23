@@ -120,6 +120,7 @@ const isValid = v$.value.$validate();
 
 const handleBack = () => {
     router.push('login');
+    localStorage.clear();
 }
 
 async function handleSubmit() {

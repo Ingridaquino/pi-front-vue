@@ -23,7 +23,7 @@
           </v-list-item>
           <v-list-item v-else prepend-icon="mdi-view-dashboard" title="Feeds" @click="navigateTo('/home/feeds')">
           </v-list-item>
-        <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="showSnackbar">
+        <v-list-item prepend-icon="mdi-gavel" title="Configurações" @click="navigateTo('/editar-perfil')">
           </v-list-item>
         </v-list>
 

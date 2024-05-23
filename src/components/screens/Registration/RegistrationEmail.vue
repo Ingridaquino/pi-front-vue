@@ -163,7 +163,8 @@ async function createdProfile() {
 }
 
 const handleBack = () => {
-    router.push('login').then(() => window.location.reload())
+    router.go(-1)
+    localStorage.clear();
 }
 
 </script>

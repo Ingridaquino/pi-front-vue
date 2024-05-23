@@ -4,7 +4,7 @@
     <div class="textarea__flexA">
       <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" @blur="saveData"></v-textarea>
     </div>
-    <div class="portfolio--button">
+    <div class="portfolio--button" v-if="perfil !== 'Cliente'">
       <v-btn color="primary" @click="showModal = true">Adicionar ao Portfólio </v-btn>
     </div>
 
@@ -61,7 +61,7 @@
 
 <script setup>
 import CardUser from './components/CardUser.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios';
 
 let user = null
@@ -76,7 +76,7 @@ let imagem = ref([])
 let descricao = ref('')
 let titulo = ref('')
 let showModal = ref(false)
-         
+
 let capaFile = ref(null)
 let totalRating = ref(0)
 
@@ -92,7 +92,7 @@ onMounted(() => {
 
   getPortfolio()
   fetchRating()
-  getUserData() 
+  getUserData()
 
 });
 
@@ -103,7 +103,7 @@ const getUserData = async () => {
         headers: { 'token': token.value }
       });
 
-    sobre.value = response.data.bio; 
+    sobre.value = response.data.bio;
   } catch (error) {
     console.error(error);
   }
@@ -190,9 +190,11 @@ function handleFileUpload(imageType, event) {
 
 const fetchRating = async () => {
   const token = localStorage.getItem('token');
-  const id = route.params.id;
+  const user = localStorage.getItem('user');
+
+  let id = JSON.parse(user)[0];
   try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
+    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id._id}`, {
       headers: { 'token': token }
     });
 
@@ -215,6 +217,17 @@ function deleteItem(index) {
     console.error(error);
   }
 }
+
+function resetForm() {
+  capaFile.value = null;
+  titulo.value = '';
+  descricao.value = '';
+}
+watch(showModal, (newVal, oldVal) => {
+  if (!oldVal) {
+    resetForm();
+  }
+}) 
 
 </script>
 
