@@ -81,10 +81,10 @@ export default {
   },
   computed: {
     filteredProfiles() {
-      console.log(this.profiles);
-      const userId = localStorage.getItem('userId');
+      const userData = JSON.parse(localStorage.getItem('user'));
+      let user = userData[0];
       return this.profiles.filter(profile =>
-        profile._id !== userId && profile.nome.toLowerCase().includes(this.search.toLowerCase())
+        profile._id !== user._id && profile.nome.toLowerCase().includes(this.search.toLowerCase())
       );
     }
   },
