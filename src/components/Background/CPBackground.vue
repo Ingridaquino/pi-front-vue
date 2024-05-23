@@ -1,17 +1,21 @@
 <template>
     <div class="CPBackground">
-
-        <slot name="logo">
-
+        <slot name="logo">     
+            <div class="logo">
+   
+            </div>   
         </slot>
     </div>
 </template>
-<style>
 
+
+<style scoped>
 .CPBackground {
     width: 100%;
     border-radius: 0 45px 45px 0;
-    background-color: var(--color-primary);
-    height: 100%;
+    background: var(--color-primary) ;
 }
+
+
+
 </style>

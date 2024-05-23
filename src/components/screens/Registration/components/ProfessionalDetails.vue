@@ -40,12 +40,41 @@ const addArea = async () => {
         headers: { 'token': token }
     };
 
-    const data = {
-      area: props.form.area
-    };
+    const areasProfissionaisAutonomos = [
+      "Consultoria Financeira",
+      "Coaching e Mentoria",
+      "Design Gráfico",
+      "Desenvolvimento Web",
+      "Desenvolvimento Mobile",
+      "Marketing Digital",
+      "Fotografia",
+      "Redação e Edição de Conteúdo",
+      "Design de Interiores",
+      "Consultoria de Negócios",
+      "Tradução e Interpretação",
+      "Personal Training e Fitness",
+      "Consultoria de Recursos Humanos",
+      "Produção de Vídeo",
+      "Consultoria de Marketing",
+      "Coaching de Saúde e Bem-Estar",
+      "Arquitetura",
+      "Consultoria Jurídica",
+      "Contabilidade e Finanças Pessoais",
+      "Organização Profissional (Personal Organizer)",
+      "Engenharia Civil",
+      "Construção e Reforma",
+      "Paisagismo",
+
+      "Pedreiro",
+      "Encanador",
+      "Marido de Aluguel",
+      "Babá",
+
+    ];
+
 
     try {
-      const response = await axios.post(`http://localhost:5000/atuacao?_id${userId._id}`, data, headers);
+      const response = await axios.post(`http://localhost:5000/atuacao?_id${userId._id}`, areasProfissionaisAutonomos, headers);
       console.log(response.data);
     } catch (error) {
       console.error(error);

@@ -73,14 +73,14 @@ let portfolio = ref([])
 let perfil = ref('')
 let token = ref('')
 let capa = ref('')
-let imagem = ref('')
+let imagem = ref([])
 let descricao = ref('')
 let titulo = ref('')
 let showModal = ref(false)
 
 
 let capaFile = ref(null)
-let imagemFile = ref(null)
+
 
 onMounted(() => {
   const userData = JSON.parse(localStorage.getItem('user'));
@@ -118,19 +118,19 @@ const getPortfolio = async () => {
 const savePortfolio = async () => {
   let data = {
     capa: capa.value,
-    imagem: imagem.value,
     descricao: descricao.value,
-    titulo: titulo.value
-  }
+    titulo: titulo.value,
+    imagens: ''
+  };
+
   try {
     const response = await axios({
       method: 'post',
       url: `http://localhost:5000/portfolio?_id=${user._id}`,
       headers: { 'token': token.value },
-      data: data
+      data
     });
 
-    console.log(response.data);
     getPortfolio();
     showModal.value = false;
   } catch (error) {

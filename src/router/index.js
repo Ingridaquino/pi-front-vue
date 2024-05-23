@@ -28,7 +28,7 @@ const router = createRouter({
           component: () => import('../components/screens/Perfil/userProfile.vue')
         },
         {
-          path: '/profile-professional',
+          path: '/profile-professional/:id',
           name: 'ProfessionalProfile',
           component: () => import('../components/screens/Perfil/ProfessionalProfile.vue')
         },

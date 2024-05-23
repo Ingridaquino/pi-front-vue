@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-layout>
-      <v-app-bar color="primary" prominent>
+      <v-app-bar color="primary" prominent :elevation="7">
         <v-col sm="1">
           <v-avatar size="40px" @click="drawer = true" class="cursor-pointer">
             <v-img :src="avatar" alt="Avatar"></v-img>
@@ -9,9 +9,10 @@
         </v-col>
 
         <v-toolbar-title>{{ name }}</v-toolbar-title>
-
-
         <v-spacer></v-spacer>
+        <v-card-title class="text-h5">
+          AUTONOMIA
+        </v-card-title>
 
       </v-app-bar>
 

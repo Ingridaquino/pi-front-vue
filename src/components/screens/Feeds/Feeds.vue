@@ -116,13 +116,18 @@ export default {
   },
   methods: {
     goToProfile(profileId) {
-      this.$router.push({ name: '/profile-professional', params: { id: profileId } });
+      this.$router.push({ name: 'ProfessionalProfile', params: { id: profileId } });
+
     }
   }
 };
 </script>
 
 <style scoped>
+
+.feeds__container {
+  padding: 40px;
+}
 
 .feeds--bg {
   display: flex;

@@ -3,6 +3,7 @@
     <CPBackground />
 
     <div class="login__container__box">
+        
       <form @submit.prevent="login">
         <div class="login__container--form">
           <div class="inputs">
@@ -89,11 +90,24 @@ const login = async () => {
   height: 100vh;
 }
 
+.logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top:10px ;
+  
+  p {
+    color: orange;
+    font-weight: 700;
+  }
+}
+
 .login__container__box {
   display: flex;
   align-items: center;
   justify-content: center;
   margin: auto 20px;
+  flex-direction: column;
 }
 
 .login__container--form {
