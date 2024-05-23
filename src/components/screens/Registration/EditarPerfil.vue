@@ -131,10 +131,10 @@ const handleUpdate = async () => {
 
 
     let data = {
-        ...user,
+        ...userId,
         contato: {
-            email: form.value.email,
-            facebook: form.value.facebook,
+            email: userId.contato.email,
+            facebook: form.value.facebook ,
             instagram: form.value.instagram,
             twitter: form.value.twitter,
             whatsapp: form.value.whatsapp,
