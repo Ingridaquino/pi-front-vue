@@ -3,16 +3,13 @@
     <CardProfile />
     <div class="textarea__flexA">
       <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" disabled></v-textarea>
-      <v-card :style="{ height: '200px' }">
+      <v-card :style="{ height: '170px' }">
         <v-card-title>
           <h3>Avaliação</h3>
         </v-card-title>
         <div class="text-center">
           <v-rating v-model="rating" active-color="orange" color="orange-lighten-1" @input="sendRating"></v-rating>
         </div>
-        <v-card-title>
-          {{ 'Média de avaliações:' + totalRating }}
-        </v-card-title>
       </v-card>
     </div>
 
@@ -120,7 +117,7 @@ const fetchRating = async () => {
   const token = localStorage.getItem('token');
   const id = route.params.id;
   try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id${id}`, {
+    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
       headers: { 'token': token }
     });
     

@@ -12,7 +12,9 @@
         </div>
       </v-card>
     </div>
-
+    <div class="portfolio--button">
+      <v-btn color="primary" @click="showModal = true">Adicionar ao Portfólio </v-btn>
+    </div>
 
     <v-dialog v-model="showModal" persistent max-width="600px">
       <v-card>
@@ -36,24 +38,27 @@
     </v-dialog>
 
     <div class="portfolio__container" v-if="userType !== 'Cliente'">
-      <v-card >
-        <v-card-title>
+      <v-card>
+        <v-card-title class="mb-9">
           <h3>Portfólio</h3>
         </v-card-title>
         <div class="portfolio" v-for="(item, index) in portfolio" :key="index">
-  
+
           <div class="feeds--bg">
             <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="item.capa"></v-img>
           </div>
-  
+
           <div class="">
             <v-list-item class="mt-4">
               <template v-slot:title class="mb-2">
                 <strong class="text-h6 mb-2">{{ item.titulo }}</strong>
               </template>
-              <template v-slot:subtitle >
+              <template v-slot:subtitle>
                 {{ item.descricao }}
               </template>
+              <div class="mt-9">
+                <v-btn small color="red" @click="deleteItem(index)">Deletar</v-btn>
+              </div>
             </v-list-item>
           </div>
         </div>
@@ -69,7 +74,7 @@ import axios from 'axios';
 
 let user = null
 let sobre = ref('')
-let avaliacoes = ref('')
+
 let portfolio = ref([])
 
 let perfil = ref('')
@@ -101,7 +106,11 @@ onMounted(() => {
 
 const getUserData = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/${perfil.value}?_id=${user._id}`);
+    const response = await axios.get(`http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${user._id}`,
+      {
+        headers: { 'token': token.value }
+      });
+
     console.log(response.data);
   } catch (error) {
     console.error(error);
@@ -146,7 +155,7 @@ const savePortfolio = async () => {
     });
 
     getPortfolio();
-    
+
     showModal.value = false;
   } catch (error) {
     console.error(error);
@@ -191,18 +200,32 @@ const fetchRating = async () => {
   const token = localStorage.getItem('token');
   const id = route.params.id;
   try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id${id}`, {
+    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
       headers: { 'token': token }
     });
-    
+
     totalRating.value = response.data.Data.media
   } catch (error) {
     console.error(error);
   }
 };
 
-</script>
+function deleteItem(index) {
+  try {
+    const item = this.portfolio[index]._id;
+    console.log(item, 'po');
+    axios.delete(`http://localhost:5000/portfolio?_id=${item}`, {
+      headers: { 'token': token.value }
+    })
 
+    getPortfolio();
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+</script>
 
 
 
@@ -210,8 +233,8 @@ const fetchRating = async () => {
 .profile__container {
   padding: 20px;
 
-  overflow: auto; 
-  max-height: 100%; 
+  overflow: auto;
+  max-height: 100%;
 }
 
 .textarea__flexA {
