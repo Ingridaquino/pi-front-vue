@@ -69,14 +69,14 @@ let sobre = ref('')
 
 let portfolio = ref([])
 
-let perfil = ref('')
+let perfil = ref('')`
 let token = ref('')
 let capa = ref('')
 let imagem = ref([])
 let descricao = ref('')
 let titulo = ref('')
 let showModal = ref(false)
-
+``
 
 let capaFile = ref(null)
 let totalRating = ref(0)
