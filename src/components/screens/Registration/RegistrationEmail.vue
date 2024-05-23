@@ -2,6 +2,9 @@
   <div class="registration__container">
     <CPBackground />
     <div class="registration__box">
+      <div class="registration--buttonVoltar">
+        <CPButton text="Voltar" @click="handleBack" size="small" variant="outlined" />
+    </div>
       <CPStepper text="E-mail e Senha" />
       <form @submit.prevent="handleSubmit">
         <div class="inputs">
@@ -159,6 +162,10 @@ async function createdProfile() {
   }
 }
 
+const handleBack = () => {
+    router.push('login').then(() => window.location.reload())
+}
+
 </script>
 
 <style scoped>
@@ -194,4 +201,11 @@ async function createdProfile() {
   color: red;
   margin-top: 10px;
 }
+
+.registration--buttonVoltar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 40px 0 0 ;
+}
+
 </style>

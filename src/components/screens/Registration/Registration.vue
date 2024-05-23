@@ -3,6 +3,9 @@
         <CPBackground />
 
         <div class="registration__boxes">
+            <div class="registration--buttonVoltar">
+                <CPButton text="Voltar" @click="handleBack" size="small" variant="outlined" />
+            </div>
             <div class="box-switch">
                 <v-switch class="my-switch" v-model="selectedOption"
                     :label="selectedOption ? 'Cliente' : 'Profissional'"
@@ -30,6 +33,8 @@
                         <CPButton text="Salvar" type="submit" size="small" variant="default" />
                     </div>
                 </form>
+
+
             </div>
         </div>
 
@@ -112,6 +117,11 @@ const v$ = useVuelidate(rules, form);
 
 const isValid = v$.value.$validate();
 
+
+const handleBack = () => {
+    router.push('login');
+}
+
 async function handleSubmit() {
 
     if (isValid) {
@@ -128,6 +138,8 @@ async function handleSubmit() {
         snackbar.value = true;
     }
 }
+
+
 </script>
 
 
@@ -142,7 +154,7 @@ async function handleSubmit() {
 .box-switch {
     display: flex;
     justify-content: flex-end;
-    margin: 0 20px 0 0;
+    margin: 0 40px 0 0;
     height: 20px;
 }
 
@@ -150,6 +162,12 @@ async function handleSubmit() {
     display: flex;
     justify-content: flex-end;
     margin: 40px 60px;
+}
+
+.registration--buttonVoltar {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px ;
 }
 
 
