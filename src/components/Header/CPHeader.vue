@@ -5,7 +5,7 @@
         <v-col sm="1">
           <v-avatar size="40px" @click="drawer = true" class="cursor-pointer">
             <v-img v-if="avatar" :src="avatar" alt="Avatar"></v-img>
-            <v-icon size="50" color="#ccc" v-else>mdi-account-circle</v-icon>
+            <v-icon size="50" color="#cccc" v-else>mdi-account-circle</v-icon>
           </v-avatar>
         </v-col>
 

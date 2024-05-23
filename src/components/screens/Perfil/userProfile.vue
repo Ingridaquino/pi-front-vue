@@ -116,14 +116,18 @@ const getPortfolio = async () => {
       url: `http://localhost:5000/portfolio`,
       headers: { 'token': token.value }
     });
+    let id = response.data.Data[0].profissional_id;
 
-    portfolio.value = response.data.Data;
+    if(id === user._id) {
+      portfolio.value = response.data.Data;
+      
+      portfolio.value.forEach(item => {
+        capa.value = item.capa;
+        descricao.value = item.descricao;
+        titulo.value = item.titulo;
+      });
+    }
 
-    portfolio.value.forEach(item => {
-      capa.value = item.capa;
-      descricao.value = item.descricao;
-      titulo.value = item.titulo;
-    });
   } catch (error) {
     console.error(error);
   }

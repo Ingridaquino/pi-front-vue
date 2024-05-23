@@ -62,6 +62,7 @@ let totalRating = ref(0)
 
 onMounted(async () => {
 
+
   const id = route.params.id
   const token = localStorage.getItem('token');
   try {
@@ -71,29 +72,40 @@ onMounted(async () => {
     user = response.data.Data;
 
     sobre.value = user[0].bio
-    avaliacoes.value = user.avaliacoes
-
-
-    const getPortfolio = await axios({
-      method: 'get',
-      url: `http://localhost:5000/portfolio`,
-      headers: { 'token': token }
-    });
-
-    portfolio.value = getPortfolio.data.Data;
-
-
-    portfolio.value.forEach(item => {
-      capa.value = item.capa;
-      descricao.value = item.descricao;
-      titulo.value = item.titulo;
-    });
+    avaliacoes.value = user.map(u => u.avaliacoes)
 
   } catch (error) {
     console.error(error)
   }
 
+  getPortfolio()
+
 })
+
+
+const getPortfolio = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `http://localhost:5000/portfolio`,
+      headers: { 'token': token.value }
+    });
+    let id = response.data.Data[0].profissional_id;
+
+    if(id === user._id) {
+      portfolio.value = response.data.Data;
+      
+      portfolio.value.forEach(item => {
+        capa.value = item.capa;
+        descricao.value = item.descricao;
+        titulo.value = item.titulo;
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 
 const sendRating = async () => {
