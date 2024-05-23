@@ -81,6 +81,7 @@ export default {
   },
   computed: {
     filteredProfiles() {
+      console.log(this.profiles);
       const userId = localStorage.getItem('userId');
       return this.profiles.filter(profile =>
         profile._id !== userId && profile.nome.toLowerCase().includes(this.search.toLowerCase())

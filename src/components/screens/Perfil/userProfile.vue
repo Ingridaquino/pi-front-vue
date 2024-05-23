@@ -3,14 +3,6 @@
     <CardUser />
     <div class="textarea__flexA">
       <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" @blur="saveData"></v-textarea>
-      <v-card :style="{ height: '150px' }">
-        <v-card-title>
-          <h3>Avaliação</h3>
-        </v-card-title>
-        <div class="text-center">
-          <v-rating v-model="totalRating" active-color="orange" color="orange-lighten-1" readonly></v-rating>
-        </div>
-      </v-card>
     </div>
     <div class="portfolio--button">
       <v-btn color="primary" @click="showModal = true">Adicionar ao Portfólio </v-btn>
@@ -37,7 +29,7 @@
       </v-card>
     </v-dialog>
 
-    <div class="portfolio__container" v-if="userType !== 'Cliente'">
+    <div class="portfolio__container" v-if="perfil !== 'Cliente'">
       <v-card>
         <v-card-title class="mb-9">
           <h3>Portfólio</h3>

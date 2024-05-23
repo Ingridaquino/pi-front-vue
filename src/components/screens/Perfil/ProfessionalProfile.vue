@@ -157,6 +157,9 @@ watchEffect(() => {
 <style scoped>
 .profile__container {
   padding: 20px;
+
+  overflow: auto;
+  max-height: 100%;
 }
 
 
