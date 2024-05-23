@@ -25,7 +25,7 @@
                   <v-list-item class="mt-4">
                     <template v-slot:title class="mb-2">
                       <div class="">
-                        <v-rating :value="item.rating" readonly color="orange" size="18" half-increments
+                        <v-rating v-model="rating" readonly color="orange" size="18" half-increments
                         hover></v-rating>
                       </div>
                       <div>
@@ -69,7 +69,8 @@ export default {
   data() {
     return {
       search: '',
-      profiles: []
+      profiles: [],
+      rating: 3
     };
   },
   async created() {
@@ -115,7 +116,7 @@ export default {
         const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
           headers: { 'token': token }
         });
-        return response.data.Data.media;
+        this.rating = response.data.Data.media;
       } catch (error) {
         console.error('ERROR', error);
         return 0; 
