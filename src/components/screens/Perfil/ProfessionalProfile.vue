@@ -1,49 +1,51 @@
 <template>
-    <div class="profile__container">
-      <CardProfile />
-      <div class="textarea__flexA">
-        <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" disabled></v-textarea>
-        <!-- <v-card disabled>
-          <div class="text-center">
-            <v-rating
-              v-model="rating"
-              active-color="orange"
-              color="orange-lighten-1"
-            ></v-rating>
-          </div>
-        </v-card> -->
-      </div>
-  
-      <div class="portfolio__container" v-if="userType !== 'Cliente'">
-        <v-card disabled>
-          <v-card-title>
-            <h3>Portfólio</h3>
-          </v-card-title>
-          <div class="portfolio">
-  
-            <div class="feeds--bg">
-              <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="capa"></v-img>
-            </div>
-  
-            <div class="">
-              <v-list-item class="mt-4">
-                <template v-slot:title class="mb-2">
-                  <strong class="text-h6 mb-2">{{ titulo }}</strong>
-                </template>
-                <template v-slot:subtitle >
-                  {{ descricao }}
-                </template>
-              </v-list-item>
-            </div>
-          </div>
-        </v-card>
-      </div>
+  <div class="profile__container">
+    <CardProfile />
+    <div class="textarea__flexA">
+      <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" disabled></v-textarea>
+      <v-card :style="{ height: '200px' }">
+        <v-card-title>
+          <h3>Avaliação</h3>
+        </v-card-title>
+        <div class="text-center">
+          <v-rating v-model="rating" active-color="orange" color="orange-lighten-1" @input="sendRating"></v-rating>
+        </div>
+        <v-card-title>
+          {{ 'Média de avaliações:' + totalRating }}
+        </v-card-title>
+      </v-card>
     </div>
-  </template>
+
+    <div class="portfolio__container" v-if="userType !== 'Cliente'">
+      <v-card disabled>
+        <v-card-title>
+          <h3>Portfólio</h3>
+        </v-card-title>
+        <div class="portfolio">
+
+          <div class="feeds--bg">
+            <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="capa"></v-img>
+          </div>
+
+          <div class="">
+            <v-list-item class="mt-4">
+              <template v-slot:title class="mb-2">
+                <strong class="text-h6 mb-2">{{ titulo }}</strong>
+              </template>
+              <template v-slot:subtitle>
+                {{ descricao }}
+              </template>
+            </v-list-item>
+          </div>
+        </div>
+      </v-card>
+    </div>
+  </div>
+</template>
 
 <script setup>
 import CardProfile from './components/CardProfile.vue'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watchEffect} from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -58,28 +60,30 @@ let capa = ref('')
 let descricao = ref('')
 let titulo = ref('')
 
-let rating = ref(3)
+let rating = ref(2)
+let totalRating = ref(0)
+
 onMounted(async () => {
 
-    const id = route.params.id
-    const token = localStorage.getItem('token');
-    try {
-        const response = await axios.get(`http://localhost:5000/profissional?_id=${id}`, {
-            headers: { 'token': token }
-        })
-        user = response.data.Data;
+  const id = route.params.id
+  const token = localStorage.getItem('token');
+  try {
+    const response = await axios.get(`http://localhost:5000/profissional?_id=${id}`, {
+      headers: { 'token': token }
+    })
+    user = response.data.Data;
 
-        sobre.value = user[0].bio
-        avaliacoes.value = user.avaliacoes
+    sobre.value = user[0].bio
+    avaliacoes.value = user.avaliacoes
 
 
-        const getPortfolio = await axios({
-            method: 'get',
-            url: `http://localhost:5000/portfolio`,
-            headers: { 'token': token }
-        });
+    const getPortfolio = await axios({
+      method: 'get',
+      url: `http://localhost:5000/portfolio`,
+      headers: { 'token': token }
+    });
 
-        portfolio.value = getPortfolio.data.Data;
+    portfolio.value = getPortfolio.data.Data;
 
 
     portfolio.value.forEach(item => {
@@ -88,9 +92,46 @@ onMounted(async () => {
       titulo.value = item.titulo;
     });
 
-    } catch (error) {
-        console.error(error)
-    }
+  } catch (error) {
+    console.error(error)
+  }
+
+})
+
+
+const sendRating = async () => {
+  const token = localStorage.getItem('token');
+  const id = route.params.id
+  try {
+      await axios.post(`http://localhost:5000/avaliacao`, {
+      avaliacao: rating.value,
+      profissional_id: id
+    }, {
+      headers: { 'token': token }
+    })
+
+    fetchRating()
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const fetchRating = async () => {
+  const token = localStorage.getItem('token');
+  const id = route.params.id;
+  try {
+    const response = await axios.get(`http://localhost:5000/avaliacao/${id}`, {
+      headers: { 'token': token }
+    });
+    
+    totalRating.value = response.data.Data.media
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+watchEffect(() => {
+  sendRating()
 
 })
 
@@ -99,19 +140,19 @@ onMounted(async () => {
 
 <style scoped>
 .profile__container {
-    padding: 20px;
+  padding: 20px;
 }
 
 .textarea__flexA {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 20px;
 }
 
 .flex {
-    padding: 0 20px;
-    height: 100vh;
+  padding: 0 20px;
+  height: 100vh;
 }
 </style>
 
@@ -145,7 +186,6 @@ onMounted(async () => {
   right: 0;
   bottom: 0;
   object-fit: cover;
-  /* This ensures the image covers the entire area */
 }
 
 

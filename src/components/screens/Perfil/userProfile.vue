@@ -3,14 +3,16 @@
     <CardUser />
     <div class="textarea__flexA">
       <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" @blur="saveData"></v-textarea>
-      <v-textarea label="Avaliações" variant="solo" v-model="avaliacoes" name="input-7-4" @blur="saveData"></v-textarea>
+      <v-card :style="{ height: '150px' }">
+        <v-card-title>
+          <h3>Avaliação</h3>
+        </v-card-title>
+        <div class="text-center">
+          <v-rating v-model="totalRating" active-color="orange" color="orange-lighten-1" readonly></v-rating>
+        </div>
+      </v-card>
     </div>
 
-    <div class="portfolio--button" v-if="userType !== 'Cliente'">
-      <v-btn color="primary" @click="showModal = true" class="mb-5 mx-auto">
-        Adicionar Portfólio
-      </v-btn>
-    </div>
 
     <v-dialog v-model="showModal" persistent max-width="600px">
       <v-card>
@@ -34,23 +36,23 @@
     </v-dialog>
 
     <div class="portfolio__container" v-if="userType !== 'Cliente'">
-      <v-card>
+      <v-card >
         <v-card-title>
           <h3>Portfólio</h3>
         </v-card-title>
-        <div class="portfolio">
-
+        <div class="portfolio" v-for="(item, index) in portfolio" :key="index">
+  
           <div class="feeds--bg">
-            <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="capa"></v-img>
+            <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="item.capa"></v-img>
           </div>
-
+  
           <div class="">
             <v-list-item class="mt-4">
               <template v-slot:title class="mb-2">
-                <strong class="text-h6 mb-2">{{ titulo }}</strong>
+                <strong class="text-h6 mb-2">{{ item.titulo }}</strong>
               </template>
               <template v-slot:subtitle >
-                {{ descricao }}
+                {{ item.descricao }}
               </template>
             </v-list-item>
           </div>
@@ -80,6 +82,7 @@ let showModal = ref(false)
 
 
 let capaFile = ref(null)
+let totalRating = ref(0)
 
 
 onMounted(() => {
@@ -92,6 +95,7 @@ onMounted(() => {
   token.value = localStorage.getItem('token');
 
   getPortfolio()
+  fetchRating()
 
 });
 
@@ -183,6 +187,20 @@ function handleFileUpload(imageType, event) {
   reader.readAsDataURL(file);
 }
 
+const fetchRating = async () => {
+  const token = localStorage.getItem('token');
+  const id = route.params.id;
+  try {
+    const response = await axios.get(`http://localhost:5000/avaliacao/${id}`, {
+      headers: { 'token': token }
+    });
+    
+    totalRating.value = response.data.Data.media
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 </script>
 
 
@@ -191,6 +209,9 @@ function handleFileUpload(imageType, event) {
 <style scoped>
 .profile__container {
   padding: 20px;
+
+  overflow: auto; 
+  max-height: 100%; 
 }
 
 .textarea__flexA {
@@ -223,7 +244,7 @@ function handleFileUpload(imageType, event) {
   right: 0;
   bottom: 0;
   object-fit: cover;
-  /* This ensures the image covers the entire area */
+
 }
 
 
@@ -249,6 +270,8 @@ function handleFileUpload(imageType, event) {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+
+  margin-bottom: 50px;
 }
 
 .v-card-title {
