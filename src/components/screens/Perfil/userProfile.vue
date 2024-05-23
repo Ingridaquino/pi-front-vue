@@ -91,6 +91,8 @@ onMounted(() => {
   perfil.value = localStorage.getItem('tipo');
   token.value = localStorage.getItem('token');
 
+  getPortfolio()
+
 });
 
 const getUserData = async () => {
@@ -106,10 +108,17 @@ const getPortfolio = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `http://localhost:5000/portfolio?_id=${user._id}`,
+      url: `http://localhost:5000/portfolio`,
+      headers: { 'token': token.value }
     });
 
-    portfolio.value = response.data;
+    portfolio.value = response.data.Data;
+
+    portfolio.value.forEach(item => {
+      capa.value = item.capa;
+      descricao.value = item.descricao;
+      titulo.value = item.titulo;
+    });
   } catch (error) {
     console.error(error);
   }
@@ -120,18 +129,20 @@ const savePortfolio = async () => {
     capa: capa.value,
     descricao: descricao.value,
     titulo: titulo.value,
-    imagens: ''
+    imagens: '',
+    profissional_id: user._id
   };
 
   try {
     const response = await axios({
       method: 'post',
-      url: `http://localhost:5000/portfolio?_id=${user._id}`,
+      url: `http://localhost:5000/portfolio`,
       headers: { 'token': token.value },
       data
     });
 
     getPortfolio();
+    
     showModal.value = false;
   } catch (error) {
     console.error(error);
@@ -141,7 +152,6 @@ const savePortfolio = async () => {
 const saveData = async () => {
   try {
     let data = {
-      ...user,
       bio: sobre.value || user.bio,
     }
     const response = await axios({

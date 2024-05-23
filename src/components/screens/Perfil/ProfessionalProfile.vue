@@ -60,6 +60,7 @@ let titulo = ref('')
 
 let rating = ref(3)
 onMounted(async () => {
+
     const id = route.params.id
     const token = localStorage.getItem('token');
     try {
@@ -72,14 +73,28 @@ onMounted(async () => {
         avaliacoes.value = user.avaliacoes
 
 
-        const portfolioResponse = await axios.get(`http://localhost:5000/portfolio?_id=${id}`, {
+        const getPortfolio = await axios({
+            method: 'get',
+            url: `http://localhost:5000/portfolio`,
             headers: { 'token': token }
-        })
-        portfolio.value = portfolioResponse.data.Data;
+        });
+
+        portfolio.value = getPortfolio.data.Data;
+
+
+    portfolio.value.forEach(item => {
+      capa.value = item.capa;
+      descricao.value = item.descricao;
+      titulo.value = item.titulo;
+    });
+
     } catch (error) {
         console.error(error)
     }
+
 })
+
+
 </script>
 
 <style scoped>
