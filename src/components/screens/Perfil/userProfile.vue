@@ -2,10 +2,10 @@
   <div class="profile__container">
     <CardUser />
     <div class="textarea__flexA">
-      <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" @blur="saveData"></v-textarea>
+      <v-textarea label="Sobre" variant="solo" v-model="sobre" name="input-7-4" @input="updateBio" @blur="saveData"></v-textarea>
     </div>
     <div class="portfolio--button" v-if="perfil !== 'Cliente'">
-      <v-btn color="primary" @click="showModal = true">Adicionar ao Portfólio </v-btn>
+      <v-btn color="primary" @click="showModal = true">Adicionar ao Portfólio</v-btn>
     </div>
 
     <v-dialog v-model="showModal" persistent max-width="600px">
@@ -15,8 +15,7 @@
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
-            <v-file-input variant="outlined" v-model="capaFile" label="Capa" @change="handleFileUpload('capa', $event)"
-              accept="image/*"></v-file-input>
+            <v-file-input variant="outlined" v-model="capaFile" label="Capa" @change="handleFileUpload('capa', $event)" accept="image/*"></v-file-input>
             <v-text-field variant="outlined" v-model="titulo" label="Título"></v-text-field>
             <v-textarea variant="outlined" v-model="descricao" label="Descrição"></v-textarea>
           </v-form>
@@ -35,11 +34,9 @@
           <h3>Portfólio</h3>
         </v-card-title>
         <div class="portfolio" v-for="(item, index) in portfolio" :key="index">
-
           <div class="feeds--bg">
             <v-img max-height="130" :width="1000" aspect-ratio="16/9" cover :src="item.capa"></v-img>
           </div>
-
           <div class="">
             <v-list-item class="mt-4">
               <template v-slot:title class="mb-2">
@@ -62,7 +59,7 @@
 <script setup>
 import CardUser from './components/CardUser.vue'
 import { ref, onMounted, watch } from 'vue'
-import axios from 'axios';
+import axios from 'axios'
 
 let user = null
 let sobre = ref('')
@@ -78,34 +75,32 @@ let titulo = ref('')
 let showModal = ref(false)
 
 let capaFile = ref(null)
-let totalRating = ref(0)
-
 
 onMounted(() => {
-  const userData = JSON.parse(localStorage.getItem('user'));
-  user = userData[0];
+  const userData = JSON.parse(localStorage.getItem('user'))
+  user = userData[0]
 
-  sobre.value = user.bio;
+  sobre.value = user.bio
 
-  perfil.value = localStorage.getItem('tipo');
-  token.value = localStorage.getItem('token');
+  perfil.value = localStorage.getItem('tipo')
+  token.value = localStorage.getItem('token')
 
   getPortfolio()
-  fetchRating()
   getUserData()
-
-});
+})
 
 const getUserData = async () => {
   try {
-    const response = await axios.get(`http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${user._id}`,
+    const response = await axios.get(
+      `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${user._id}`,
       {
-        headers: { 'token': token.value }
-      });
+        headers: { token: token.value }
+      }
+    )
 
-    sobre.value = response.data.bio;
+    sobre.value = response.data.bio
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
@@ -114,22 +109,21 @@ const getPortfolio = async () => {
     const response = await axios({
       method: 'get',
       url: `http://localhost:5000/portfolio`,
-      headers: { 'token': token.value }
-    });
-    let id = response.data.Data[0].profissional_id;
+      headers: { token: token.value }
+    })
+    let id = response.data.Data[0].profissional_id
 
-    if(id === user._id) {
-      portfolio.value = response.data.Data;
-      
+    if (id === user._id) {
+      portfolio.value = response.data.Data
+
       portfolio.value.forEach(item => {
-        capa.value = item.capa;
-        descricao.value = item.descricao;
-        titulo.value = item.titulo;
-      });
+        capa.value = item.capa
+        descricao.value = item.descricao
+        titulo.value = item.titulo
+      })
     }
-
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
@@ -140,99 +134,86 @@ const savePortfolio = async () => {
     titulo: titulo.value,
     imagens: '',
     profissional_id: user._id
-  };
+  }
 
   try {
     const response = await axios({
       method: 'post',
       url: `http://localhost:5000/portfolio`,
-      headers: { 'token': token.value },
+      headers: { token: token.value },
       data
-    });
+    })
 
-    getPortfolio();
+    getPortfolio()
 
-    showModal.value = false;
+    showModal.value = false
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
 const saveData = async () => {
   try {
     let data = {
-      bio: sobre.value || user.bio,
+      bio: sobre.value || user.bio
     }
     const response = await axios({
       method: 'put',
       url: `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${user._id}`,
-      headers: { 'token': token.value },
+      headers: { token: token.value },
       data
-    });
+    })
 
-    getUserData();
-    console.log(response.data);
+    getUserData()
+    console.log(response.data)
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
+}
+
+const updateBio = (event) => {
+  sobre.value = event.target.value
 }
 
 function handleFileUpload(imageType, event) {
-  const file = event.target.files[0];
-  if (!file) return;
+  const file = event.target.files[0]
+  if (!file) return
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
+  const reader = new FileReader()
+  reader.onload = e => {
     if (imageType === 'capa') {
-      capa.value = e.target.result;
+      capa.value = e.target.result
     } else if (imageType === 'imagem') {
-      imagem.value = e.target.result;
+      imagem.value = e.target.result
     }
-  };
-  reader.readAsDataURL(file);
-}
-
-const fetchRating = async () => {
-  const token = localStorage.getItem('token');
-  const user = localStorage.getItem('user');
-
-  let id = JSON.parse(user)[0];
-  try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id._id}`, {
-      headers: { 'token': token }
-    });
-
-    totalRating.value = response.data.Data.media
-  } catch (error) {
-    console.error(error);
   }
-};
+  reader.readAsDataURL(file)
+}
 
 function deleteItem(index) {
   try {
-    const item = this.portfolio[index]._id;
+    const item = this.portfolio[index]._id
     axios.delete(`http://localhost:5000/portfolio?_id=${item}`, {
-      headers: { 'token': token.value }
+      headers: { token: token.value }
     })
 
-    getPortfolio();
-
+    getPortfolio()
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 }
 
 function resetForm() {
-  capaFile.value = null;
-  titulo.value = '';
-  descricao.value = '';
+  capaFile.value = null
+  titulo.value = ''
+  descricao.value = ''
 }
+
 watch(showModal, (newVal, oldVal) => {
   if (!oldVal) {
-    resetForm();
+    resetForm()
   }
-}) 
-
+})
 </script>
 
 

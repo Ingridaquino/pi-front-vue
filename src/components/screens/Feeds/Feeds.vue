@@ -25,7 +25,7 @@
                   <v-list-item class="mt-4">
                     <template v-slot:title class="mb-2">
                       <div class="">
-                        <v-rating v-model="rating" readonly color="orange" size="18" half-increments
+                        <v-rating :value="item.rating" readonly color="orange" size="18" half-increments
                         hover></v-rating>
                       </div>
                       <div>
@@ -40,7 +40,6 @@
                   </v-list-item>
                   <v-card-actions>
                     <v-btn flat color="orange" @click="goToProfile(item._id)">Perfil</v-btn>
-
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -70,21 +69,19 @@ export default {
   data() {
     return {
       search: '',
-      profiles: [],
-      rating: 0
+      profiles: []
     };
   },
   async created() {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios({
-        method: 'get',
-        url: 'http://localhost:5000/profissional',
+      const response = await axios.get('http://localhost:5000/profissional', {
         headers: { 'token': token }
       });
       this.profiles = response.data.Data;
 
-    fetchRating()
+  
+      await this.fetchRatings();
 
     } catch (error) {
       console.error(error);
@@ -102,25 +99,32 @@ export default {
   methods: {
     goToProfile(profileId) {
       this.$router.push({ name: 'ProfessionalProfile', params: { id: profileId } });
-
+    },
+    async fetchRatings() {
+      const userData = JSON.parse(localStorage.getItem('user'));
+      let user = userData[0];
+      const token = localStorage.getItem('token');
+      for (const profile of this.profiles) {
+        if (profile._id !== user._id) {
+          profile.rating = await this.fetchRating(profile._id, token);
+         }
+        }
+    },
+    async fetchRating(id, token) {
+      try {
+        const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
+          headers: { 'token': token }
+        });
+        return response.data.Data.media;
+      } catch (error) {
+        console.error('ERROR', error);
+        return 0; 
+      }
     }
-  },
-
-  async fetchRating(){
-  const token = localStorage.getItem('token');
-  const id = route.params.id;
-  try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
-      headers: { 'token': token }
-    });
-    
-    this.rating = response.data.Data.media
-  } catch (error) {
-    console.error(error);
   }
 }
-};
 </script>
+   
 
 <style scoped>
 .feeds__container {
