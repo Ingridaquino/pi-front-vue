@@ -5,7 +5,7 @@
       <div class="profile__avatar">
         <v-avatar size="100px">
           <v-img :src="avatar" v-if="avatar"></v-img>
-          <v-icon size="50" v-else>mdi-account-circle</v-icon>
+          <v-icon size="50"  color="#FB6F0B" v-else>mdi-account-circle</v-icon>
         </v-avatar>
       </div>
       <div class="profile__flexA">

@@ -3,9 +3,9 @@
     <v-layout>
       <v-app-bar color="primary" prominent :elevation="7">
         <v-col sm="1">
-          <v-avatar size="40px" @click="drawer = true" class="cursor-pointer">
+          <v-avatar size="40px" @click="drawer = true" class="cursor-pointer" color="#FB6F0B">
             <v-img v-if="avatar" :src="avatar" alt="Avatar"></v-img>
-            <v-icon size="50" color="#cccc" v-else>mdi-account-circle</v-icon>
+            <v-icon size="50"  v-else>mdi-account-circle</v-icon>
           </v-avatar>
         </v-col>
 

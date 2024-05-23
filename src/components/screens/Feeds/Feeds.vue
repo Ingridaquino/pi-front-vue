@@ -19,7 +19,7 @@
                   <div class="feeds__avatar">
                     <v-avatar size="77px">
                       <v-img v-if="item.foto" :src="item.foto"></v-img>
-                      <v-icon size="50" v-else>mdi-account-circle</v-icon>
+                      <v-icon size="50" color="#FB6F0B" v-else>mdi-account-circle</v-icon>
                     </v-avatar>
                   </div>
                   <v-list-item class="mt-4">

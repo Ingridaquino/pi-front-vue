@@ -84,15 +84,20 @@ onMounted(async () => {
 
 
 const getPortfolio = async () => {
+  const urlId = route.params.id
+  const token = localStorage.getItem('token');
+
   try {
     const response = await axios({
       method: 'get',
       url: `http://localhost:5000/portfolio`,
-      headers: { 'token': token.value }
+      headers: { 'token': token }
     });
     let id = response.data.Data[0].profissional_id;
 
-    if(id === user._id) {
+
+
+    if(id === urlId) {
       portfolio.value = response.data.Data;
       
       portfolio.value.forEach(item => {

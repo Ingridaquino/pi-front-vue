@@ -94,10 +94,11 @@ const populateFormFromLocalStorage = () => {
 
     let user = userData[0];
 
+    console.log(   form.value.photo = user.foto , 'foto');
     form.value.name = user.nome || '';
     form.value.date = user.nascimento || '';
     form.value.gender = user.genero || '';
-    form.value.document = user.document || '';
+    form.value.document = user.document;
     form.value.number = user.endereco.numero || '';
     form.value.complement = user.endereco.rua || '';
     form.value.neighborhood = user.endereco.bairro || '';
