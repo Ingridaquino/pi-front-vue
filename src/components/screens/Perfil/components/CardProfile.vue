@@ -4,7 +4,8 @@
       <div class="profile-bg"></div>
       <div class="profile__avatar">
         <v-avatar size="100px">
-          <v-img :src="avatar"></v-img>
+          <v-img :src="avatar" v-if="avatar"></v-img>
+          <v-icon size="50" v-else>mdi-account-circle</v-icon>
         </v-avatar>
       </div>
       <div class="profile__flexA">

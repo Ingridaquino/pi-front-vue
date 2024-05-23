@@ -1,7 +1,8 @@
 <template>
   <div class="avatar-box">
     <input type="file" ref="fileInput" style="display: none" @change="previewImage">
-    <v-avatar :size="size" :image="photoUrl" color="#ccc" @click="openFileInput"></v-avatar>
+    <v-avatar :size="size" :image="photoUrl" color="#ccc" @click="openFileInput" v-if="photoUrl"></v-avatar>
+    <v-icon size="50" v-else>mdi-account-circle</v-icon>
   </div>
 </template>
 
