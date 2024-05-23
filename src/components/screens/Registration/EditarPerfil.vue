@@ -61,6 +61,7 @@ import { useVuelidate } from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 
 import { onMounted } from 'vue';
+import { get } from '@vueuse/core';
 
 const router = useRouter();
 const selectedOption = ref(true);
@@ -112,6 +113,8 @@ const v$ = useVuelidate(rules, form);
 
 const isValid = v$.value.$validate();
 
+const userData = ref({});
+
 async function handleSubmit() {
 
     if (isValid) {
@@ -127,28 +130,25 @@ async function handleSubmit() {
     }
 }
 
-onMounted(() => {
-    const userData = JSON.parse(localStorage.getItem('user'))[0];
 
-    name.value = userData.nome;
-    date.value = userData.nascimento;
-    gender.value = userData.genero;
-    document.value = userData.documento;
-    number.value = userData.numero;
-    complement.value = userData.rua;
-    neighborhood.value = userData.bairro;
-    cep.value = userData.cep;
-    city.value = userData.cidade;
-    state.value = userData.estado;
-    area.value = userData.atuacao;
-    phone.value = userData.telefone;
-    instagram.value = userData.instagram;
-    facebook.value = userData.facebook;
-    whatsapp.value = userData.whatsapp;
-    twitter.value = userData.twitter;
-    photo.value = userData.foto;
 
-});
+
+const getUser = async() => {
+    const token = localStorage.getItem('token');
+    const tipo = localStorage.getItem('tipo');
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user[0];
+
+    const response = await fetch(`http://localhost:5000/${tipo.toLocaleLowerCase()}?_id=${userId._id}`, {
+        method: 'GET',
+        headers: { 'token': token }
+    });
+
+    userData.value = response.data
+}
+
+
+
 
 async function handleUpdate() {
     const token = localStorage.getItem('token');

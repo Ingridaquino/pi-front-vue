@@ -69,15 +69,14 @@ let sobre = ref('')
 
 let portfolio = ref([])
 
-let perfil = ref('')`
+let perfil = ref('')
 let token = ref('')
 let capa = ref('')
 let imagem = ref([])
 let descricao = ref('')
 let titulo = ref('')
 let showModal = ref(false)
-``
-
+         
 let capaFile = ref(null)
 let totalRating = ref(0)
 
@@ -93,6 +92,7 @@ onMounted(() => {
 
   getPortfolio()
   fetchRating()
+  getUserData() 
 
 });
 
@@ -103,7 +103,7 @@ const getUserData = async () => {
         headers: { 'token': token.value }
       });
 
-    console.log(response.data);
+    sobre.value = response.data.bio; 
   } catch (error) {
     console.error(error);
   }
@@ -205,7 +205,6 @@ const fetchRating = async () => {
 function deleteItem(index) {
   try {
     const item = this.portfolio[index]._id;
-    console.log(item, 'po');
     axios.delete(`http://localhost:5000/portfolio?_id=${item}`, {
       headers: { 'token': token.value }
     })
