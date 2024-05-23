@@ -1,5 +1,14 @@
 <template>
-    <v-text-field v-model="newArea" label="Área de atuação" variant="outlined"  @keyup.enter="addArea"></v-text-field>
+    <v-autocomplete
+        v-model="newArea"
+        :items="areas"
+        label="Área de atuação"
+        item-text="area"
+        item-value="_id"
+        @change="addArea"
+        variant="outlined"
+    ></v-autocomplete>
+
     <v-btn @click="addArea" color="primary">Adicionar</v-btn>
 
     <v-row>
@@ -12,7 +21,7 @@
 </template>
   
 <script setup>
-import { defineProps, ref } from 'vue';
+import { defineProps, ref, onMounted } from 'vue';
 import axios from 'axios';
 
 const props = defineProps({
@@ -24,57 +33,38 @@ const props = defineProps({
 });
 
 const newArea = ref('');
+const areas = ref([]);
 
-const addArea = async () => {
-  if (newArea.value.trim().length > 0) {
-    const codigo = Math.floor(Math.random() * 1000000);
-
-    props.form.area.push({_id: codigo, area: newArea.value});
-    newArea.value = '';
-
+const getAreas = async () => {
     const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
-    const userId = user[0]; 
-
     const headers = {
         headers: { 'token': token }
     };
 
-    const areasProfissionaisAutonomos = [
-      "Consultoria Financeira",
-      "Coaching e Mentoria",
-      "Design Gráfico",
-      "Desenvolvimento Web",
-      "Desenvolvimento Mobile",
-      "Marketing Digital",
-      "Fotografia",
-      "Redação e Edição de Conteúdo",
-      "Design de Interiores",
-      "Consultoria de Negócios",
-      "Tradução e Interpretação",
-      "Personal Training e Fitness",
-      "Consultoria de Recursos Humanos",
-      "Produção de Vídeo",
-      "Consultoria de Marketing",
-      "Coaching de Saúde e Bem-Estar",
-      "Arquitetura",
-      "Consultoria Jurídica",
-      "Contabilidade e Finanças Pessoais",
-      "Organização Profissional (Personal Organizer)",
-      "Engenharia Civil",
-      "Construção e Reforma",
-      "Paisagismo",
+    try {
+        const response = await axios.get('http://localhost:5000/atuacao', headers);
+        areas.value = response.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
-      "Pedreiro",
-      "Encanador",
-      "Marido de Aluguel",
-      "Babá",
+onMounted(getAreas);
 
-    ];
+const addArea = async () => {
+  if (newArea.value) {
+    props.form.area.push(newArea.value);
+    newArea.value = '';
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user[0]; 
+
+    const headers = {
+        headers: { 'token': localStorage.getItem('token') }
+    };
 
     try {
-      const response = await axios.post(`http://localhost:5000/atuacao?_id${userId._id}`, areasProfissionaisAutonomos, headers);
+      const response = await axios.post(`http://localhost:5000/atuacao?_id=${userId._id}`, { area: props.form.area }, headers);
       console.log(response.data);
     } catch (error) {
       console.error(error);

@@ -104,7 +104,7 @@ const populateFormFromLocalStorage = () => {
     form.value.cep = user.endereco.cep || '';
     form.value.city = user.endereco.cidade || '';
     form.value.state = user.endereco.estado || '';
-    form.value.area = user.area || '';
+    form.value.area = user.atuacao || '';
 
     form.value.phone = user.contato.telefone || '';
     form.value.instagram = user.contato.instagram || '';
@@ -131,6 +131,7 @@ const handleUpdate = async () => {
 
 
     let data = {
+        ...user,
         contato: {
             email: form.value.email,
             facebook: form.value.facebook,
@@ -151,6 +152,7 @@ const handleUpdate = async () => {
         genero: form.value.gender,
         nome: form.value.name,
         nascimento: form.value.date,
+        atuacao: form.value.area,
     };
 
 const response = await axios.put(`http://localhost:5000/${tipo}?_id=${userId._id}`, data, {
