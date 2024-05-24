@@ -20,6 +20,7 @@ export default {
     },
   },
   created() {
+
     this.loadPhotoFromLocalStorage();
   },
   methods: {
