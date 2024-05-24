@@ -39,7 +39,6 @@
                   </v-list-item>
                   <v-card-actions>
                     <v-btn flat color="orange" @click="goToProfile(item._id)">Perfil</v-btn>
-
                   </v-card-actions>
                 </v-card>
               </v-col>
@@ -105,6 +104,7 @@ export default {
 
 };
 </script>
+   
 
 <style scoped>
 .feeds__container {

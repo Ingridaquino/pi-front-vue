@@ -94,7 +94,7 @@ const populateFormFromLocalStorage = () => {
 
     let user = userData[0];
 
-    console.log(   form.value.photo = user.foto , 'foto');
+
     form.value.name = user.nome || '';
     form.value.date = user.nascimento || '';
     form.value.gender = user.genero || '';
@@ -112,7 +112,7 @@ const populateFormFromLocalStorage = () => {
     form.value.facebook = user.contato.facebook || '';
     form.value.whatsapp = user.contato.whatsapp || '';
     form.value.twitter = user.contato.twitter || '';
-    form.value.photo = user.foto || '';
+    form.value.photo = user.foto;
 };
 
 onMounted(() => {
@@ -181,7 +181,8 @@ if (response.status >= 200 && response.status < 300) {
 .background {
     background: var(--color-primary);
     border-radius: 0 45px 45px 0;
-    height: 100%;
+    height: 100vh;
+
 }
 
 .registration__container {

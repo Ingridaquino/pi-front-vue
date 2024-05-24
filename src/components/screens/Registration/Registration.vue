@@ -150,7 +150,7 @@ async function handleSubmit() {
 .background {
     background-color: var(--color-primary);
     border-radius: 0 45px 45px 0;
-    height: 100%;
+    height: 100vh;
 
 }
 
