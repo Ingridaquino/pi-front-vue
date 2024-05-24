@@ -127,7 +127,7 @@ onMounted(() => {
 const getUserData = async () => {
   try {
     const response = await axios.get(
-      `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${
+      `/api/${perfil.value.toLocaleLowerCase()}?_id=${
         user._id
       }`,
       {
@@ -145,7 +145,7 @@ const getPortfolio = async () => {
   try {
     const response = await axios({
       method: "get",
-      url: `http://localhost:5000/portfolio`,
+      url: `/api/portfolio`,
       headers: { token: token.value },
     });
 
@@ -173,7 +173,7 @@ const savePortfolio = async () => {
   try {
     const response = await axios({
       method: "post",
-      url: `http://localhost:5000/portfolio`,
+      url: `/api/portfolio`,
       headers: { token: token.value },
       data,
     });
@@ -193,7 +193,7 @@ const saveData = async () => {
     }
     const response = await axios({
       method: "put",
-      url: `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${
+      url: `/api/${perfil.value.toLocaleLowerCase()}?_id=${
         user._id
       }`,
       headers: { token: token.value },
@@ -234,7 +234,7 @@ function handleFileUpload(imageType, event) {
 function deleteItem(index) {
   try {
     const item = this.portfolio[index]._id;
-    axios.delete(`http://localhost:5000/portfolio?_id=${item}`, {
+    axios.delete(`/api/portfolio?_id=${item}`, {
       headers: { token: token.value },
     });
 

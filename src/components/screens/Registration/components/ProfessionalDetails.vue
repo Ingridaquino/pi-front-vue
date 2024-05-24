@@ -37,14 +37,14 @@ const getAreas = async () => {
   try {
     const user = JSON.parse(localStorage.getItem('user'));
     const userId = user[0]._id;
-    const response = await axios.get(`http://localhost:5000/profissional/atuacao?_id=${userId}`, headers);
+    const response = await axios.get(`/api/profissional/atuacao?_id=${userId}`, headers);
     props.form.area = response.data.Data;
   } catch (error) {
     console.error(error);
   }
 
   try {
-    const response = await axios.get('http://localhost:5000/atuacao', headers);
+    const response = await axios.get('/api/atuacao', headers);
     areas.value = response.data.Data;
   } catch (error) {
     console.error(error);
@@ -66,7 +66,7 @@ const addArea = async () => {
     };
 
     try {
-      const response = await axios.put(`http://localhost:5000/profissional?_id=${userId._id}`, { atuacao: props.form.area }, headers);
+      const response = await axios.put(`/api/profissional?_id=${userId._id}`, { atuacao: props.form.area }, headers);
     } catch (error) {
       console.error(error);
     }
@@ -87,7 +87,7 @@ const removeArea = async (area) => {
   console.log(dt)
 
   try {
-    const response = await axios.put(`http://localhost:5000/profissional?_id=${userId._id}`, { atuacao: dt }, headers);
+    const response = await axios.put(`/api/profissional?_id=${userId._id}`, { atuacao: dt }, headers);
   } catch (error) {
     console.error(error);
   }

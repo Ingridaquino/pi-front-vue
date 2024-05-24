@@ -1,15 +1,16 @@
-version: "3"
 
 services:
   client:
     container_name: client
     build:
       context: ./
-      dockerfile: dockerfile.api
-    volumes:
-      - client_data:/app/
+      dockerfile: dockerfile
+    restart: always
     ports:
       - '80:80'
+    networks:
+      - api_network
 
-volumes:
-  client_data:
+networks:
+  api_network:
+    external: true

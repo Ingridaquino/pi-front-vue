@@ -66,7 +66,7 @@ onMounted(async () => {
   const id = route.params.id
   const token = localStorage.getItem('token');
   try {
-    const response = await axios.get(`http://localhost:5000/profissional?_id=${id}`, {
+    const response = await axios.get(`/api/profissional?_id=${id}`, {
       headers: { 'token': token }
     })
     user = response.data.Data;
@@ -89,7 +89,7 @@ const getPortfolio = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `http://localhost:5000/portfolio`,
+      url: `/api/portfolio`,
       headers: { 'token': token }
     });
 
@@ -111,7 +111,7 @@ const sendRating = async () => {
   const token = localStorage.getItem('token');
   const id = route.params.id
   try {
-      await axios.post(`http://localhost:5000/avaliacao`, {
+      await axios.post(`/api/avaliacao`, {
       avaliacao: rating.value,
       profissional_id: id
     }, {
@@ -128,7 +128,7 @@ const fetchRating = async () => {
   const token = localStorage.getItem('token');
   const id = route.params.id;
   try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
+    const response = await axios.get(`/api/avaliacao/profissional?_id=${id}`, {
       headers: { 'token': token }
     });
     

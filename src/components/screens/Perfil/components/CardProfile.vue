@@ -52,7 +52,7 @@ onMounted(async () => {
   const id = route.params.id;
   const token = localStorage.getItem("token");
   const response = await axios.get(
-    `http://localhost:5000/profissional?_id=${id}`,
+    `/api/profissional?_id=${id}`,
     {
       headers: { token: token },
     }

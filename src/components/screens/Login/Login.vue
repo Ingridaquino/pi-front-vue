@@ -55,7 +55,7 @@ const login = async () => {
 
   localStorage.setItem('tipo', perfil.value);
   try {
-    const response = await axios.post('http://localhost:5000/login', data);
+    const response = await axios.post('/api/login', data);
  
     if (response.data.Success) {
       
@@ -63,7 +63,7 @@ const login = async () => {
  
       const userResponse = await axios({
         method: 'get',
-        url: `http://localhost:5000/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`,
+        url: `/api/${perfil.value.toLocaleLowerCase()}?_id=${response.data._id}`,
         headers: { 'token': response.data.Token }
       }); 
 
