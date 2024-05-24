@@ -25,13 +25,12 @@
                   <v-list-item class="mt-4">
                     <template v-slot:title class="mb-2">
                       <div class="">
-                        <v-rating v-model="rating" readonly color="orange" size="18" half-increments
-                        hover></v-rating>
+                        <v-rating v-model="item.nota" readonly color="orange" size="18" half-increments hover></v-rating>
                       </div>
                       <div>
                         <strong class="text-h6 mb-2">{{ item.nome }}</strong>
                       </div>
-                      
+
                     </template>
                     <template v-slot:subtitle>
                       {{ item.area }}
@@ -71,7 +70,6 @@ export default {
     return {
       search: '',
       profiles: [],
-      rating: 0
     };
   },
   async created() {
@@ -79,12 +77,10 @@ export default {
       const token = localStorage.getItem('token');
       const response = await axios({
         method: 'get',
-        url: 'http://localhost:5000/profissional',
+        url: 'http://localhost:5000/profissional/feed',
         headers: { 'token': token }
       });
       this.profiles = response.data.Data;
-
-    fetchRating()
 
     } catch (error) {
       console.error(error);
@@ -106,19 +102,7 @@ export default {
     }
   },
 
-  async fetchRating(){
-  const token = localStorage.getItem('token');
-  const id = route.params.id;
-  try {
-    const response = await axios.get(`http://localhost:5000/avaliacao/profissional?_id=${id}`, {
-      headers: { 'token': token }
-    });
-    
-    this.rating = response.data.Data.media
-  } catch (error) {
-    console.error(error);
-  }
-}
+
 };
 </script>
 

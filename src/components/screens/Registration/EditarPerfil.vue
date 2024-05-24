@@ -156,6 +156,11 @@ const handleUpdate = async () => {
         atuacao: form.value.area,
     };
 
+    if(tipo == "cliente"){
+        data.atuacao = undefined
+    }
+
+
 const response = await axios.put(`http://localhost:5000/${tipo}?_id=${userId._id}`, data, {
     headers: { 'token': token},
 });

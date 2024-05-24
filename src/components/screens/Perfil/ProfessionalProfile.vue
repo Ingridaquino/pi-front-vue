@@ -8,7 +8,7 @@
           <h3>Avaliação</h3>
         </v-card-title>
         <div class="text-center">
-          <v-rating v-model="rating" active-color="orange" color="orange-lighten-1" @input="sendRating"></v-rating>
+          <v-rating v-model="totalRating" active-color="orange" color="orange-lighten-1" @input="sendRating"></v-rating>
         </div>
       </v-card>
     </div>

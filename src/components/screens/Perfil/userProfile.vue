@@ -85,7 +85,7 @@ onMounted(() => {
   const userData = JSON.parse(localStorage.getItem('user'));
   user = userData[0];
 
-  sobre.value = user.bio;
+  // sobre.value = user.bio;
 
   perfil.value = localStorage.getItem('tipo');
   token.value = localStorage.getItem('token');
@@ -103,7 +103,7 @@ const getUserData = async () => {
         headers: { 'token': token.value }
       });
 
-    sobre.value = response.data.bio;
+    sobre.value = response.data.Data[0].bio;
   } catch (error) {
     console.error(error);
   }
@@ -161,7 +161,7 @@ const savePortfolio = async () => {
 const saveData = async () => {
   try {
     let data = {
-      bio: sobre.value || user.bio,
+      bio: sobre.value,
     }
     const response = await axios({
       method: 'put',
@@ -170,8 +170,13 @@ const saveData = async () => {
       data
     });
 
-    getUserData();
-    console.log(response.data);
+    const userData = JSON.parse(localStorage.getItem('user'));
+    userData[0].bio = sobre.value;
+
+    localStorage.setItem("user", JSON.stringify(userData))
+
+    // getUserData();
+    // console.log(response.data);
   } catch (error) {
     console.error(error);
   }

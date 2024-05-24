@@ -62,8 +62,16 @@ onMounted(async () => {
   avatar.value = user.foto;
   nome.value = user.nome;
 
+  atuacaoItems();
   addContactItems();
 });
+
+const atuacaoItems = () => {
+  if(user.atuacao){
+    const item_l = user.atuacao.map((a) => a.descricao)
+    profissao.value = item_l.join(", ")
+  }
+}
 
 function addContactItems() {
   const allowedKeys = ["email", "instagram", "whatsapp"];
